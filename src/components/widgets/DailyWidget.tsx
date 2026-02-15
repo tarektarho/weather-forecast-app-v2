@@ -24,7 +24,8 @@ const DailyWidget: React.FC = () => {
   }
 
   if (
-    forecastData.loading ||
+    forecastData.isLoading ||
+    forecastData.isFetching ||
     !isForecastData(forecastData.data) ||
     Object.keys(forecastData.data).length === 0
   ) {

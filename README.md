@@ -1,10 +1,13 @@
+[![codecov](https://codecov.io/gh/tarektarho/weather-forecast-app-v2/branch/main/graph/badge.svg?token=dLe5v8Gm4V)](https://codecov.io/gh/tarektarho/weather-forecast-app-v2)
+[![Deploy to GitHub Pages](https://github.com/tarektarho/weather-forecast-app-v2/actions/workflows/deploy.yml/badge.svg)](https://github.com/tarektarho/weather-forecast-app-v2/actions/workflows/deploy.yml)
+
 # WeatherForecastApp
 
 ## Live Demo
 
 https://tarek-weather-forecast-app.netlify.app/
 
-Built with [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Redux Toolkit](https://redux-toolkit.js.org/), [Vite](https://vitejs.dev/), [Vitest](https://vitest.dev/), and [React Testing Library](https://github.com/testing-library/react-testing-library). Uses the [OpenWeather API](https://openweathermap.org/) for weather data.
+Built with [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Redux Toolkit](https://redux-toolkit.js.org/) with [RTK Query](https://redux-toolkit.js.org/rtk-query/overview), [Vite](https://vitejs.dev/), [Vitest](https://vitest.dev/), and [React Testing Library](https://github.com/testing-library/react-testing-library). Uses the [OpenWeather API](https://openweathermap.org/) for weather data.
 
 Leverages React 19 features including the React Compiler, `useOptimistic`, `useActionState`, and document metadata support.
 
@@ -19,11 +22,24 @@ Leverages React 19 features including the React Compiler, `useOptimistic`, `useA
 ## Features
 
 - Display weather forecast based on the user's current latitude and longitude (Geolocation API)
-- Search weather forecast by city name
+- Search weather forecast by city name with **RTK Query caching** — repeated searches for the same city are served instantly from cache
 - 5-day / 3-hour weather forecast
 - Air pollution data based on geolocation
 - Share current location weather with friends via URL
 - Additional weather details: wind speed, pressure, humidity, and more
+
+## Architecture
+
+All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react`). A single `baseApi` instance is created with `createApi` and endpoints are injected via `injectEndpoints()` for weather, forecast, and air pollution data.
+
+### RTK Query & Caching Strategy
+
+- **Centralized API layer** — A shared `baseApi` with a custom `baseQuery` that auto-appends the API key and normalizes errors.
+- **Automatic caching** — Query results are cached and keyed by coordinates (`lat,lon`) or lowercase city name. Searching for the same city again returns cached data without a network request.
+- **5-minute cache TTL** — Unused cache entries are kept for 300 seconds (`keepUnusedDataFor: 300`), balancing freshness with performance.
+- **Cache tags** — Three tag types (`Weather`, `Forecast`, `AirPollution`) enable granular cache invalidation when needed.
+- **Dual-mode querying** — The `WeatherProvider` declares six RTK Query hooks (3 by lat/lon, 3 by city) and uses `skip` to activate only the relevant set, ensuring seamless switching between geolocation and city search.
+- **Code-split endpoints** — Each API domain (weather, forecast, air pollution) injects its own endpoints, keeping the codebase modular while sharing a single cache store.
 
 ## Available Scripts
 
@@ -71,7 +87,7 @@ Leverages React 19 features including the React Compiler, `useOptimistic`, `useA
 
 ### Runtime
 
-- **@reduxjs/toolkit** — Redux state management with simplified setup
+- **@reduxjs/toolkit** — Redux state management with RTK Query for data fetching and caching
 - **react** / **react-dom** — React 19 for building user interfaces
 - **react-redux** — Official React bindings for Redux
 - **react-router-dom** — Client-side routing

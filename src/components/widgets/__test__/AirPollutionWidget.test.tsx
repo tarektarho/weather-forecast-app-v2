@@ -1,93 +1,193 @@
 import { render, screen } from "@testing-library/react"
-import { fetchAirPolutionMockedResponse } from "../../../services/__test__/airPollution.test"
-import type { WeatherContextValue } from "../../../providers/weatherContext"
-import { WeatherContext } from "../../../providers/weatherContext"
+import { describe, it, expect, vi } from "vitest"
 import AirPollutionWidget from "../AirPollutionWidget"
-import type { SetStateAction } from "react"
+import type { WeatherContextValue } from "../../../providers/weatherContext"
+import type AirPollutionData from "../../../types/airPollution"
 
-interface WeatherContextMockedValue extends WeatherContextValue {}
-const WeatherContextMockedData = {
-  airPollutionData: {
-    loading: true,
-    data: {},
-  },
-  weatherData: {
-    loading: true,
-    data: {},
-  },
-  forecastData: {
-    loading: true,
-    data: {},
-  },
-  city: "",
-  setCity: (_value: SetStateAction<string>): void => {},
-  searchByCity: (): void => {},
-  copyShareUrl: (): void => {},
-  modal: false,
-  hideModal: (): void => {},
-  error: undefined,
-  hideError: (): void => {},
-  info: undefined,
-  setInfo: (_value: SetStateAction<string | undefined>): void => {},
-  setError: (_value: SetStateAction<string | undefined>): void => {},
+// ---------------------------------------------------------------------------
+// Mocks
+// ---------------------------------------------------------------------------
+
+const mockUseWeather = vi.fn()
+
+vi.mock("../../../providers/weatherContext", () => ({
+  useWeather: () => mockUseWeather(),
+}))
+
+vi.mock("../../common/skeletons/AirPollutionWidgetSkeleton", () => ({
+  default: () => <div data-testid="air-pollution-skeleton">Loading…</div>,
+}))
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function makeAirPollutionData(
+  aqi: number = 1,
+  componentOverrides: Partial<AirPollutionData["list"][0]["components"]> = {},
+): AirPollutionData {
+  return {
+    coord: { lat: 52.37, lon: 4.89 },
+    list: [
+      {
+        dt: 1700000000,
+        main: { aqi },
+        components: {
+          co: 201.94,
+          nh3: 0.72,
+          no: 0.01,
+          no2: 0.77,
+          o3: 68.66,
+          pm2_5: 0.5,
+          pm10: 1.23,
+          so2: 0.64,
+          ...componentOverrides,
+        },
+      },
+    ],
+  }
 }
 
-describe("AirPollutionWidget", () => {
-  const contextValueMocked: WeatherContextMockedValue = WeatherContextMockedData
-
-  const renderComponent = (
-    contextValue = contextValueMocked,
-    propsValues = {},
-  ) => {
-    render(
-      <WeatherContext.Provider value={contextValue}>
-        <AirPollutionWidget {...propsValues} />
-      </WeatherContext.Provider>,
-    )
+function mockContext(
+  overrides: Partial<WeatherContextValue["airPollutionData"]> = {},
+): Partial<WeatherContextValue> {
+  return {
+    airPollutionData: {
+      data: undefined,
+      error: undefined,
+      isLoading: false,
+      isFetching: false,
+      isSuccess: false,
+      isError: false,
+      isUninitialized: true,
+      ...overrides,
+    },
   }
+}
 
-  it("renders skeleton when airPollutionData.data is null", () => {
-    renderComponent({
-      ...WeatherContextMockedData,
-      airPollutionData: {
-        loading: false,
-        data: null as unknown as Record<string, never>,
-      },
-    })
-    const skeletonComponent = screen.getAllByTestId("skeleton-test-id")[0]
-    expect(skeletonComponent).toBeVisible()
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
+
+describe("AirPollutionWidget", () => {
+  // Skeleton / loading states -----------------------------------------------
+
+  it("shows skeleton when airPollutionData.data is undefined", () => {
+    mockUseWeather.mockReturnValue(mockContext({ data: undefined }))
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("air-pollution-skeleton")).toBeInTheDocument()
   })
 
-  it("renders is loading if airPollutionData.loading is true", () => {
-    renderComponent()
-    const skeletonComponent = screen.getAllByTestId("skeleton-test-id")[0]
-    expect(skeletonComponent).toBeVisible()
-  })
-  it("renders is loading if airPollutionData.data is empty", () => {
-    renderComponent({
-      ...WeatherContextMockedData,
-      airPollutionData: {
-        loading: false,
-        data: {},
-      },
-    })
-    const skeletonComponent = screen.getAllByTestId("skeleton-test-id")[0]
-    expect(skeletonComponent).toBeVisible()
+  it("shows skeleton when airPollutionData is null/falsy", () => {
+    mockUseWeather.mockReturnValue({ airPollutionData: null })
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("air-pollution-skeleton")).toBeInTheDocument()
   })
 
-  it("renders if items present", () => {
-    renderComponent({
-      ...WeatherContextMockedData,
-      airPollutionData: {
-        loading: false,
-        data: fetchAirPolutionMockedResponse,
-      },
-    })
-    const title = screen.getByTestId("airpollution-widget-title")
-    const co = screen.getAllByTestId("airpollution-co")
+  it("shows skeleton when isLoading is true", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isLoading: true }),
+    )
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("air-pollution-skeleton")).toBeInTheDocument()
+  })
 
-    expect(title).toBeVisible()
-    expect(title).toHaveTextContent("Your Current Air Pollution")
-    expect(co[0]).toHaveTextContent("247")
+  it("shows skeleton when isFetching is true", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isFetching: true }),
+    )
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("air-pollution-skeleton")).toBeInTheDocument()
+  })
+
+  it("shows skeleton when data fails the type guard (no list)", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: { foo: "bar" } as unknown as AirPollutionData }),
+    )
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("air-pollution-skeleton")).toBeInTheDocument()
+  })
+
+  // Rendered content --------------------------------------------------------
+
+  it("renders the title", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+    expect(screen.getByTestId("airpollution-widget-title")).toHaveTextContent(
+      "Your Current Air Pollution",
+    )
+  })
+
+  it.each([
+    [1, "Good Quality"],
+    [2, "Fair Quality"],
+    [3, "Moderate Quality"],
+    [4, "Poor Quality"],
+    [5, "Very Poor Quality"],
+  ])("displays '%s' quality as '%s'", (aqi, label) => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(aqi), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+    expect(screen.getByText(label)).toBeInTheDocument()
+  })
+
+  it("renders empty quality text for unknown AQI value", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(0), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+    // AQI 0 is not in the quality map, so the h3 should be empty
+    expect(screen.getByTestId("airpollution-widget-title")).toBeInTheDocument()
+  })
+
+  it("renders all 8 pollution component cards", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+
+    const expectedLabels = [
+      "CO",
+      "Nh3",
+      "NO",
+      "No2",
+      "O3",
+      "Pm2 5",
+      "Pm 10",
+      "So2",
+    ]
+    for (const label of expectedLabels) {
+      expect(screen.getByText(label)).toBeInTheDocument()
+    }
+  })
+
+  it("renders correct component values", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+
+    const values = screen.getAllByTestId("airpollution-co")
+    expect(values).toHaveLength(8)
+
+    // Verify the values match the mock data
+    const expectedValues = [201.94, 0.72, 0.01, 0.77, 68.66, 0.5, 1.23, 0.64]
+    values.forEach((el, i) => {
+      expect(el).toHaveTextContent(String(expectedValues[i]))
+    })
+  })
+
+  it("renders sequential numbering (1–8) for each component", () => {
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeAirPollutionData(), isSuccess: true }),
+    )
+    render(<AirPollutionWidget />)
+
+    for (let i = 1; i <= 8; i++) {
+      expect(screen.getByText(String(i))).toBeInTheDocument()
+    }
   })
 })

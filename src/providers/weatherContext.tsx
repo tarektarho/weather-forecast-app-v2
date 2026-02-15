@@ -5,25 +5,15 @@ import type WeatherData from "../types/weather"
 import type ForecastData from "../types/forecast"
 import type AirPollutionData from "../types/airPollution"
 
-/**
- * Redux state wrappers for data with loading and error states
- */
-export interface WeatherState {
-  loading: boolean
-  error?: string | boolean
-  data: WeatherData | {}
-}
-
-export interface ForecastState {
-  loading: boolean
-  error?: string
-  data: ForecastData | {}
-}
-
-export interface AirPollutionState {
-  loading: boolean
-  error?: string
-  data: AirPollutionData | {}
+/** Shared shape exposed via context – only the fields widgets actually consume. */
+export interface QueryResult<T> {
+  data?: T
+  error?: unknown
+  isLoading: boolean
+  isFetching: boolean
+  isSuccess: boolean
+  isError: boolean
+  isUninitialized: boolean
 }
 
 /**
@@ -33,9 +23,9 @@ export interface WeatherContextValue {
   city: string
   setCity: React.Dispatch<React.SetStateAction<string>>
   searchByCity: (city?: string) => void
-  weatherData: WeatherState // Data for weather information with loading state
-  forecastData: ForecastState // Data for forecast information with loading state
-  airPollutionData: AirPollutionState | undefined // Data for air pollution information with loading state
+  weatherData: QueryResult<WeatherData>
+  forecastData: QueryResult<ForecastData>
+  airPollutionData: QueryResult<AirPollutionData>
   copyShareUrl: () => void
   modal: boolean
   hideModal: () => void
