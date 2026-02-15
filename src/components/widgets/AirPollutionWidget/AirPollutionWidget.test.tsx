@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import AirPollutionWidget from "../AirPollutionWidget"
+import AirPollutionWidget from "./AirPollutionWidget"
 import type { WeatherContextValue } from "../../../providers/weatherContext"
 import type AirPollutionData from "../../../types/airPollution"
 

@@ -48,6 +48,7 @@
 
 /* Animation effects */
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
@@ -56,4 +57,11 @@
   50% {
     opacity: 0.6;
   }
+}
+
+.skeleton-container {
+  margin: 0 10px 0 10px;
+  background-color: #ddd;
+  border-radius: 4px;
+  animation: pulse 1s ease-in-out infinite;
 }

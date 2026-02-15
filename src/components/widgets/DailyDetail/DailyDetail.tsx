@@ -1,12 +1,13 @@
 import React from "react"
-import type { ForecastItem } from "../../types/forecast"
+import type { ForecastItem } from "../../../types/forecast"
 import {
   convertKelvinToCelsius,
   getDay,
   getMonth,
   getHour,
   getWeatherIcon,
-} from "../../utils/index"
+} from "../../../utils/index"
+import "./DailyDetail.scss"
 
 interface DailyDetailProps {
   data: ForecastItem | null

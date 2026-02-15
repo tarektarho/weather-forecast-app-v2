@@ -1,7 +1,7 @@
 import React from "react"
 import { render, screen, fireEvent } from "@testing-library/react"
 import { describe, it, expect, vi, beforeEach } from "vitest"
-import Dashboard from "../Dashboard"
+import Dashboard from "./Dashboard"
 import type { WeatherContextValue } from "../../providers/weatherContext"
 import * as UtilsModule from "../../utils"
 import type WeatherData from "../../types/weather"
@@ -23,21 +23,21 @@ vi.mock("../../providers/weatherContext", () => ({
 }))
 
 // Mock child widgets to isolate Dashboard logic
-vi.mock("../widgets/CurrentWidget", () => ({
+vi.mock("../widgets/CurrentWidget/CurrentWidget", () => ({
   default: () => <div data-testid="current-widget">CurrentWidget</div>,
 }))
-vi.mock("../widgets/DailyWidget", () => ({
+vi.mock("../widgets/DailyWidget/DailyWidget", () => ({
   default: () => <div data-testid="daily-widget">DailyWidget</div>,
 }))
-vi.mock("../widgets/AdditionalWidget", () => ({
+vi.mock("../widgets/AdditionalWidget/AdditionalWidget", () => ({
   default: () => <div data-testid="additional-widget">AdditionalWidget</div>,
 }))
-vi.mock("../widgets/AirPollutionWidget", () => ({
+vi.mock("../widgets/AirPollutionWidget/AirPollutionWidget", () => ({
   default: () => (
     <div data-testid="air-pollution-widget">AirPollutionWidget</div>
   ),
 }))
-vi.mock("../Search", () => ({
+vi.mock("../Search/Search", () => ({
   default: () => <div data-testid="search">Search</div>,
 }))
 

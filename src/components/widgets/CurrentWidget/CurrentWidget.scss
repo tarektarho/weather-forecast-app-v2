@@ -1,0 +1,143 @@
+@use "../../../styles/variables" as *;
+
+.icons-container {
+  cursor: pointer;
+  padding-right: 10px;
+
+  .current-widget-icon {
+    width: 24px;
+  }
+}
+
+.weather-detail {
+  color: $blue;
+  background: $light-blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  padding: 36px 12px 12px;
+
+  .icon {
+    display: block;
+    width: 90px;
+    margin: 0 auto;
+  }
+
+  h3 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: $dark;
+    font-weight: 600;
+  }
+
+  .widget-actions {
+    position: absolute;
+    padding: 10px;
+    top: 8px;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    button {
+      font-weight: 700;
+      font-size: 12px;
+      border-radius: 6px;
+      padding: 5px 8px;
+      border: 0;
+      cursor: pointer;
+      background: $white;
+      margin-right: 6px;
+      border: 1px solid $blue;
+      transition: 0.5s;
+
+      &:hover {
+        background: $gray;
+      }
+    }
+  }
+}
+
+.weather-extra {
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 42px;
+    margin: 0 auto 12px;
+  }
+
+  span {
+    display: inline-block;
+    width: 80px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
+.bg-extra1 {
+  background-color: $light-orange;
+}
+
+.bg-extra2 {
+  background-color: $light-green;
+}
+
+.bg-extra3 {
+  background-color: $medium-blue;
+  color: $white;
+}
+
+.bg-extra4 {
+  background-color: $light-red;
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+
+  .weather-detail,
+  .weather-extra-wrapper,
+  .flex-item {
+    flex: 1 1 0px;
+    align-self: stretch;
+  }
+
+  .weather-detail {
+    margin-right: 16px;
+
+    .icon {
+      width: 120px;
+    }
+  }
+
+  .weather-extra:nth-child(3) {
+    margin-bottom: 0;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 1200px) {
+  .weather-detail {
+    margin-right: 0;
+
+    h3 {
+      font-size: 48px;
+    }
+
+    .icon,
+    .daily-item .icon {
+      width: 140px;
+    }
+  }
+}

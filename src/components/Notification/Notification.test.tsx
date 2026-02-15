@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import Notification from "../Notification"
+import Notification from "./Notification"
 
 // Stub image imports
 vi.mock("../../assets/images/error.png", () => ({ default: "error.png" }))

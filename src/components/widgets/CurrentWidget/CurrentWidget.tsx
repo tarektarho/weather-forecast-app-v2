@@ -1,10 +1,15 @@
 import React from "react"
-import { useWeather } from "../../providers/weatherContext"
-import { getWeatherIcon, resetApp, convertKelvinToCelsius } from "../../utils"
-import shareIcon from "../../assets/images/share.png"
-import resetIcon from "../../assets/images/reset.png"
-import CurrentWidgetSkeleton from "../common/skeletons/CurrentWidgetSkeleton"
-import type WeatherData from "../../types/weather"
+import { useWeather } from "../../../providers/weatherContext"
+import {
+  getWeatherIcon,
+  resetApp,
+  convertKelvinToCelsius,
+} from "../../../utils"
+import shareIcon from "../../../assets/images/share.png"
+import resetIcon from "../../../assets/images/reset.png"
+import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"
+import type WeatherData from "../../../types/weather"
+import "./CurrentWidget.scss"
 
 const CurrentWidget: React.FC = () => {
   // Get weatherData and copyShareUrl from the weather context

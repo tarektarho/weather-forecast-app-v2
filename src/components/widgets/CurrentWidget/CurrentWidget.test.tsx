@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, it, expect, vi } from "vitest"
-import CurrentWidget from "../CurrentWidget"
+import CurrentWidget from "./CurrentWidget"
 import type { WeatherContextValue } from "../../../providers/weatherContext"
 import type WeatherData from "../../../types/weather"
 

@@ -1,7 +1,7 @@
 import type {
   QueryResult,
   WeatherContextValue,
-} from "../../../providers/weatherContext"
+} from "../../providers/weatherContext"
 
 /**
  * Creates a mock QueryResult for use in test context values.

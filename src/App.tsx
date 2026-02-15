@@ -1,7 +1,7 @@
 import React from "react"
-import Dashboard from "./components/Dashboard"
+import Dashboard from "./components/Dashboard/Dashboard"
 import { WeatherProvider } from "./providers/weatherProvider"
-import ErrorBoundary from "./components/ErrorBoundary"
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"
 
 const App: React.FC = () => {
   return (
