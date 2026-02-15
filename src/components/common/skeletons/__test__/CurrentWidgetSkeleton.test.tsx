@@ -8,11 +8,9 @@ describe("CurrentWidgetSkeleton", () => {
     expect(screen.getByRole("current-widget-skeleton")).toBeInTheDocument()
   })
 
-  it("renders three extra weather skeleton elements", () => {
-    const { container } = render(<CurrentWidgetSkeleton />)
-    const extras = container.querySelectorAll(
-      ".weather-extra-wrapper .skeleton",
-    )
-    expect(extras.length).toBe(3)
+  it("renders four skeleton elements (1 detail + 3 extras)", () => {
+    render(<CurrentWidgetSkeleton />)
+    const skeletons = screen.getAllByTestId("skeleton-test-id")
+    expect(skeletons).toHaveLength(4)
   })
 })

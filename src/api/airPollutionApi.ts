@@ -41,9 +41,15 @@ export const airPollutionApi = baseApi.injectEndpoints({
         const pollutionResult = await fetchWithBQ(
           airPollutionEndpoints.byLatLon(firstResult.lat, firstResult.lon),
         )
-        return pollutionResult.data
-          ? { data: pollutionResult.data as AirPollutionData }
-          : { error: pollutionResult.error! }
+        if (pollutionResult.data) {
+          return { data: pollutionResult.data as AirPollutionData }
+        }
+        return {
+          error: pollutionResult.error ?? {
+            status: 500,
+            data: "Unknown error",
+          },
+        }
       },
     }),
   }),

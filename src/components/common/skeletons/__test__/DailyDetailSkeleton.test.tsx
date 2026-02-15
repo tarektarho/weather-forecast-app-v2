@@ -1,17 +1,16 @@
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { describe, it, expect } from "vitest"
 import DailyDetailSkeleton from "../DailyDetailSkeleton"
 
 describe("DailyDetailSkeleton", () => {
   it("renders a skeleton element", () => {
-    const { container } = render(<DailyDetailSkeleton />)
-    const skeleton = container.querySelector(".skeleton")
-    expect(skeleton).toBeInTheDocument()
+    render(<DailyDetailSkeleton />)
+    expect(screen.getByTestId("skeleton-test-id")).toBeInTheDocument()
   })
 
   it("has the daily-item class", () => {
-    const { container } = render(<DailyDetailSkeleton />)
-    const skeleton = container.querySelector(".daily-item")
-    expect(skeleton).toBeInTheDocument()
+    render(<DailyDetailSkeleton />)
+    const skeleton = screen.getByTestId("skeleton-test-id")
+    expect(skeleton).toHaveClass("daily-item")
   })
 })
