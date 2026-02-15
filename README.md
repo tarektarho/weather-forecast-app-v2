@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/tarektarho/weather-forecast-app-v2/branch/main/graph/badge.svg?token=dLe5v8Gm4V)](https://codecov.io/gh/tarektarho/weather-forecast-app-v2)
+[![Deploy to GitHub Pages](https://github.com/tarektarho/weather-forecast-app-v2/actions/workflows/deploy.yml/badge.svg)](https://github.com/tarektarho/weather-forecast-app-v2/actions/workflows/deploy.yml)
+
 # WeatherForecastApp
 
 ## Live Demo
