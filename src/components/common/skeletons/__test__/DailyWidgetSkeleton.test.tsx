@@ -9,8 +9,9 @@ describe("DailyWidgetSkeleton", () => {
   })
 
   it("renders 7 daily-item skeleton placeholders", () => {
-    const { container } = render(<DailyWidgetSkeleton />)
-    const items = container.querySelectorAll(".daily-wrapper .skeleton")
-    expect(items.length).toBe(7)
+    render(<DailyWidgetSkeleton />)
+    // 1 forecast-title skeleton + 7 daily-item skeletons = 8 total
+    const skeletons = screen.getAllByTestId("skeleton-test-id")
+    expect(skeletons).toHaveLength(8)
   })
 })
