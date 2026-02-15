@@ -1,0 +1,124 @@
+import React from "react"
+import "../styles/Dashboard.scss"
+import { LOCAL_STORAGE_KEY_WELCOME_MODAL } from "../utils/constants"
+import { useWeather } from "../providers/weatherContext"
+import CurrentWidget from "./widgets/CurrentWidget"
+import DailyWidget from "./widgets/DailyWidget"
+import AdditionalWidget from "./widgets/AdditionalWidget"
+import AirPollutionWidget from "./widgets/AirPollutionWidget"
+import Notification from "./Notification"
+import Search from "./Search"
+import Modal from "./Modal"
+import { getLocalStorageItem } from "../utils"
+
+const Dashboard: React.FC = () => {
+  // Fetch necessary data and functions from the WeatherContext
+  const { modal, hideModal, weatherData, error, hideError, info, setInfo } =
+    useWeather()
+
+  // React 19: Extract weather info for document metadata
+  const hasWeatherData =
+    weatherData?.data && Object.keys(weatherData.data).length > 0
+  const locationName =
+    hasWeatherData && "name" in weatherData.data ? weatherData.data.name : null
+  const weatherDescription =
+    hasWeatherData &&
+    "weather" in weatherData.data &&
+    Array.isArray(weatherData.data.weather)
+      ? weatherData.data.weather[0]?.description
+      : null
+
+  // Render an error notification if there's an error message
+  const renderErrorIfAny = () => {
+    const currentError = weatherData?.error || error
+    if (currentError) {
+      return (
+        <Notification
+          message={
+            typeof currentError === "string"
+              ? currentError
+              : "An error occurred"
+          }
+          hideNotification={hideError}
+          type="error"
+        />
+      )
+    }
+  }
+
+  // Render an info notification if there's an info message
+  const renderNotificationIfAny = () => {
+    if (info) {
+      return (
+        <Notification
+          message={info}
+          hideNotification={() => setInfo(undefined)}
+          type="info"
+        />
+      )
+    }
+  }
+
+  // Render the welcome modal if it's required
+  const renderModalIfNeeded = () => {
+    if (!modal) {
+      return
+    }
+
+    const welcomeModal = getLocalStorageItem(LOCAL_STORAGE_KEY_WELCOME_MODAL)
+    if (!welcomeModal) {
+      return <Modal hideModal={hideModal} />
+    }
+  }
+
+  return (
+    <div className="main-container" data-testid="main-container">
+      {/* React 19: Document metadata for SEO - automatically hoisted to <head> */}
+      <title>
+        {locationName
+          ? `Weather in ${locationName} - WeatherApp`
+          : "WeatherApp - Real-time Weather Forecast"}
+      </title>
+      <meta
+        name="description"
+        content={
+          weatherDescription
+            ? `Current weather: ${weatherDescription}. Get real-time weather forecasts, air pollution data, and 5-day forecasts.`
+            : "Get real-time weather forecasts, air pollution data, and 5-day weather forecasts for any location."
+        }
+      />
+      <div className="main-wrapper">
+        <div className="main-content">
+          <div className="main-title">
+            <Search />
+            <div className="title">
+              <h1>WeatherApp</h1>
+            </div>
+          </div>
+          {/* Forecast 5 days */}
+          <DailyWidget />
+          <div className="flex-wrapper">
+            {/* More data from OpenWeather */}
+            <div className="flex-item widget">
+              <AdditionalWidget />
+            </div>
+            {/* AirPollution */}
+            <div className="flex-item widget">
+              <AirPollutionWidget />
+            </div>
+          </div>
+        </div>
+        {/* Current weather detail */}
+        <div className="detail-content">
+          <CurrentWidget />
+        </div>
+      </div>
+
+      {renderErrorIfAny()}
+      {renderModalIfNeeded()}
+      {renderNotificationIfAny()}
+    </div>
+  )
+}
+
+export default Dashboard
