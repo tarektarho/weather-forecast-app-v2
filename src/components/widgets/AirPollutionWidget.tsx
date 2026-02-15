@@ -32,7 +32,11 @@ const AirPollutionWidget: React.FC = () => {
   }
 
   // Check if air pollution data is loading or not valid
-  if (airPollutionData.loading || !isAirPollutionData(airPollutionData.data)) {
+  if (
+    airPollutionData.isLoading ||
+    airPollutionData.isFetching ||
+    !isAirPollutionData(airPollutionData.data)
+  ) {
     return <AirPollutionWidgetSkeleton />
   }
 

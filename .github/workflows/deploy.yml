@@ -43,7 +43,7 @@ jobs:
         runs-on: ubuntu-latest
 
         environment:
-            name: github_pages
+            name: production
             url: ${{ steps.deployment.outputs.page_url }}
 
         steps:

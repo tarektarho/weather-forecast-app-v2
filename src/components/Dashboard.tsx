@@ -17,28 +17,27 @@ const Dashboard: React.FC = () => {
     useWeather()
 
   // React 19: Extract weather info for document metadata
-  const hasWeatherData =
-    weatherData?.data && Object.keys(weatherData.data).length > 0
-  const locationName =
-    hasWeatherData && "name" in weatherData.data ? weatherData.data.name : null
-  const weatherDescription =
-    hasWeatherData &&
-    "weather" in weatherData.data &&
-    Array.isArray(weatherData.data.weather)
-      ? weatherData.data.weather[0]?.description
-      : null
+  const weatherInfo = weatherData?.data
+  const hasWeatherData = weatherInfo && Object.keys(weatherInfo).length > 0
+  const locationName = hasWeatherData ? weatherInfo.name : null
+  const weatherDescription = hasWeatherData
+    ? weatherInfo.weather?.[0]?.description
+    : null
 
   // Render an error notification if there's an error message
   const renderErrorIfAny = () => {
-    const currentError = weatherData?.error || error
+    const weatherError = weatherData?.error
+      ? typeof weatherData.error === "object" &&
+        weatherData.error !== null &&
+        "data" in weatherData.error
+        ? String((weatherData.error as { data: unknown }).data)
+        : "An error occurred"
+      : undefined
+    const currentError = weatherError || error
     if (currentError) {
       return (
         <Notification
-          message={
-            typeof currentError === "string"
-              ? currentError
-              : "An error occurred"
-          }
+          message={currentError}
           hideNotification={hideError}
           type="error"
         />

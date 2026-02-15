@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
-import weatherReducer from "../features/reducers/weather"
-import forecastReducer from "../features/reducers/forecast"
-import airPollutionReducer from "../features/reducers/airPollution"
+import { baseApi } from "../api/baseApi"
+import weatherUiReducer from "../features/weather/slice"
 
 export const store = configureStore({
   reducer: {
-    weather: weatherReducer,
-    forecast: forecastReducer,
-    airPollution: airPollutionReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
+    weatherUi: weatherUiReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApi.middleware),
 })

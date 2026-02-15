@@ -243,5 +243,27 @@ describe("Utils", () => {
       Utils.sleep(1000)
       expect(Utils.sleep).toHaveBeenCalledWith(1000)
     })
+
+    it("resolves after the specified delay (real implementation)", async () => {
+      // Import the actual (unmocked) sleep to cover lines 193-194
+      const actual = await vi.importActual<typeof Utils>("../../utils/index")
+
+      vi.useFakeTimers()
+
+      let resolved = false
+      actual.sleep(500).then(() => {
+        resolved = true
+      })
+
+      expect(resolved).toBe(false)
+
+      await vi.advanceTimersByTimeAsync(499)
+      expect(resolved).toBe(false)
+
+      await vi.advanceTimersByTimeAsync(1)
+      expect(resolved).toBe(true)
+
+      vi.useRealTimers()
+    })
   })
 })

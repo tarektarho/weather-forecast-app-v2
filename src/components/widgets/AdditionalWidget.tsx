@@ -25,7 +25,11 @@ const AdditionalWidget: React.FC = () => {
   }
 
   // Check if weather data is loading or not available
-  if (weatherData.loading || !isWeatherData(weatherData.data)) {
+  if (
+    weatherData.isLoading ||
+    weatherData.isFetching ||
+    !isWeatherData(weatherData.data)
+  ) {
     return <AdditionalWidgetSkeleton />
   }
 
