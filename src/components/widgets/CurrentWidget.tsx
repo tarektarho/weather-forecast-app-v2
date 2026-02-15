@@ -27,7 +27,11 @@ const CurrentWidget: React.FC = () => {
   }
 
   // If weatherData is loading or data is not valid, return.
-  if (weatherData.loading || !isWeatherData(weatherData.data)) {
+  if (
+    weatherData.isLoading ||
+    weatherData.isFetching ||
+    !isWeatherData(weatherData.data)
+  ) {
     return <CurrentWidgetSkeleton />
   }
 

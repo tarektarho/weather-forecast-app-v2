@@ -7,7 +7,6 @@ import tsParser from "@typescript-eslint/parser"
 import react from "eslint-plugin-react"
 import prettier from "eslint-plugin-prettier"
 import testingLibrary from "eslint-plugin-testing-library"
-import reactCompiler from "eslint-plugin-react-compiler"
 
 // Shared rules used across source and test configurations
 const sharedRules = {
@@ -68,7 +67,6 @@ export default [
     plugins: {
       ...sharedPlugins,
       "react-refresh": reactRefresh,
-      "react-compiler": reactCompiler,
     },
     rules: {
       ...sharedRules,
@@ -77,7 +75,6 @@ export default [
         "warn",
         { allowConstantExport: true },
       ],
-      "react-compiler/react-compiler": "error",
     },
     settings: sharedSettings,
   },

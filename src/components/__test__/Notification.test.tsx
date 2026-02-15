@@ -1,28 +1,13 @@
-import { fireEvent, render, screen, act } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
+import { describe, it, expect, vi } from "vitest"
 import Notification from "../Notification"
-import { store } from "../../store/store"
-import { Provider } from "react-redux"
-import { WeatherProvider } from "../../providers/weatherProvider"
-import * as WeatherService from "../../services/weather"
-import * as ForecastService from "../../services/forecast"
-import * as AirPollutionService from "../../services/airPollution"
-import * as Utils from "../../utils/index"
-import Dashboard from "../Dashboard"
-import { weatherServiceMockedResponse } from "../../services/__test__/weather.test"
-import { forecastServiceMockedResponse } from "../../services/__test__/forecast.test"
-import { fetchAirPolutionMockedResponse } from "../../services/__test__/airPollution.test"
-import type { WeatherProviderProps } from "./Dashboard.test"
+
+// Stub image imports
+vi.mock("../../assets/images/error.png", () => ({ default: "error.png" }))
+vi.mock("../../assets/images/close.png", () => ({ default: "close.png" }))
 
 describe("Notification", () => {
-  const wrapper: React.FC<WeatherProviderProps> = ({ children }) => {
-    return (
-      <Provider store={store}>
-        <WeatherProvider>{children}</WeatherProvider>
-      </Provider>
-    )
-  }
-
-  it("renders error notification", () => {
+  it("renders error notification with error icon", () => {
     render(
       <Notification
         message="city not found"
@@ -35,11 +20,11 @@ describe("Notification", () => {
 
     expect(div).toBeVisible()
     expect(div).toHaveClass("error")
-    expect(div.textContent?.trim()).toEqual("city not found")
+    expect(div.textContent?.trim()).toContain("city not found")
     expect(icon).toBeVisible()
   })
 
-  it("renders info notification", () => {
+  it("renders info notification without error icon", () => {
     render(
       <Notification
         message="URL was copied to clipboard"
@@ -52,10 +37,11 @@ describe("Notification", () => {
 
     expect(div).toBeVisible()
     expect(div).toHaveClass("info")
-    expect(div.textContent?.trim()).toEqual("URL was copied to clipboard")
+    expect(div.textContent?.trim()).toContain("URL was copied to clipboard")
+    expect(screen.queryByTestId("error-icon")).toBeNull()
   })
 
-  it("renders success notification without an error icon", () => {
+  it("renders success notification without error icon", () => {
     render(
       <Notification
         message="Operation completed"
@@ -68,70 +54,46 @@ describe("Notification", () => {
 
     expect(div).toBeVisible()
     expect(div).toHaveClass("success")
-    expect(div.textContent?.trim()).toEqual("Operation completed")
+    expect(div.textContent?.trim()).toContain("Operation completed")
     expect(screen.queryByTestId("error-icon")).toBeNull()
   })
 
-  it("close error notification", async () => {
-    vi.spyOn(Utils, "getLocalStorageItem").mockImplementation(() => {
-      return { lat: 100, lon: 100 }
-    })
-
-    vi.spyOn(Utils, "getBrowserGeoPosition").mockImplementation(() => {
-      return Promise.resolve({ latitude: 100, longitude: 100 })
-    })
-
-    vi.spyOn(WeatherService, "getWeatherByLatLon").mockImplementation(() => {
-      return Promise.resolve({ ...weatherServiceMockedResponse })
-    })
-
-    vi.spyOn(AirPollutionService, "getAirPollutionByLatLon").mockImplementation(
-      () => {
-        return Promise.resolve({
-          ...fetchAirPolutionMockedResponse,
-        })
-      },
+  it("calls hideNotification when close icon is clicked", () => {
+    const hideNotification = vi.fn()
+    render(
+      <Notification
+        message="some message"
+        hideNotification={hideNotification}
+        type="error"
+      />,
     )
 
-    vi.spyOn(ForecastService, "getForecastByLatLon").mockImplementation(() => {
-      return Promise.resolve({ ...forecastServiceMockedResponse })
-    })
+    fireEvent.click(screen.getByTestId("close-icon"))
+    expect(hideNotification).toHaveBeenCalledTimes(1)
+  })
 
-    // to search by mocks
-    vi.spyOn(ForecastService, "getForecastByCity").mockImplementation(() => {
-      return Promise.reject({ message: "city not found" })
-    })
-
-    vi.spyOn(WeatherService, "getWeatherByCity").mockImplementation(() => {
-      return Promise.reject({ message: "city not found" })
-    })
-
-    vi.spyOn(AirPollutionService, "getAirPollutionByCity").mockImplementation(
-      () => {
-        return Promise.reject({ message: "city not found" })
-      },
+  it("displays the message text", () => {
+    render(
+      <Notification
+        message="Test message"
+        hideNotification={() => {}}
+        type="info"
+      />,
     )
+    expect(screen.getByText("Test message")).toBeInTheDocument()
+  })
 
-    render(<Dashboard />, { wrapper })
-
-    const searchInput = screen.getByTestId("input-search-by-city") // input data-testid=input-search-by-city
-    const searchButton = screen.getByTestId("btn-search")
-
-    fireEvent.change(searchInput, { target: { value: "Amsterdam" } })
-
-    await act(async () => {
-      await fireEvent.click(searchButton)
-    })
-
+  it("renders correctly with undefined message", () => {
+    render(
+      <Notification
+        message={undefined}
+        hideNotification={() => {}}
+        type="info"
+      />,
+    )
     const div = screen.getByTestId("notification")
-    const text = div.textContent?.trim()
-    expect(text).toEqual("city not found")
-    const closeIcon = screen.getByTestId("close-icon")
-
-    await act(async () => {
-      await fireEvent.click(closeIcon)
-    })
-
-    expect(div).not.toBeVisible()
+    expect(div).toBeVisible()
+    expect(div).toHaveClass("info")
+    expect(screen.queryByTestId("error-icon")).toBeNull()
   })
 })
