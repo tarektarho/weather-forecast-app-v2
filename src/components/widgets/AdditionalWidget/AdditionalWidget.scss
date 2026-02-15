@@ -1,0 +1,20 @@
+@use "../../../styles/variables" as *;
+
+.flex-item {
+  span {
+    display: inline-block;
+    width: 80px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .my-other-step {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}

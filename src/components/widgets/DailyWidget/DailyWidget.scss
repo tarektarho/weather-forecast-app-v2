@@ -1,0 +1,18 @@
+@use "../../../styles/variables" as *;
+
+.daily-container {
+  display: flex;
+  overflow: auto;
+  border-radius: 8px;
+  padding: 12px 0 12px 16px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.daily-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

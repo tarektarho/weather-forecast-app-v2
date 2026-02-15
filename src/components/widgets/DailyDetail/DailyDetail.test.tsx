@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import DailyDetail from "../DailyDetail"
+import DailyDetail from "./DailyDetail"
 import type { ForecastItem } from "../../../types/forecast"
 
 describe("DailyDetail", () => {

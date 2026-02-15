@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
-import DailyWidget from "../DailyWidget"
+import DailyWidget from "./DailyWidget"
 import type { WeatherContextValue } from "../../../providers/weatherContext"
 import type ForecastData from "../../../types/forecast"
 import type { ForecastItem } from "../../../types/forecast"
@@ -16,7 +16,7 @@ vi.mock("../../../providers/weatherContext", () => ({
 }))
 
 // Mock DailyDetail to keep tests focused on DailyWidget logic
-vi.mock("../DailyDetail", () => ({
+vi.mock("../DailyDetail/DailyDetail", () => ({
   default: ({ data }: { data: ForecastItem }) => (
     <div data-testid="daily-detail">{data.dt_txt}</div>
   ),

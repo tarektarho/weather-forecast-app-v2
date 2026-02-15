@@ -1,6 +1,7 @@
 import React from "react"
-import ErrorIcon from "../assets/images/error.png"
-import CloseIcon from "../assets/images/close.png"
+import ErrorIcon from "../../assets/images/error.png"
+import CloseIcon from "../../assets/images/close.png"
+import "./Notification.scss"
 
 // Define the interface for the props received by the Notification component.
 interface NotificationProps {

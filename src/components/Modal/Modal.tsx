@@ -1,6 +1,7 @@
 import React from "react"
-import MapImg from "../assets/images/map.jpeg"
-import packageJson from "../../package.json"
+import MapImg from "../../assets/images/map.jpeg"
+import packageJson from "../../../package.json"
+import "./Modal.scss"
 
 // Define the interface for the props received by the Modal component.
 interface ModalProps {

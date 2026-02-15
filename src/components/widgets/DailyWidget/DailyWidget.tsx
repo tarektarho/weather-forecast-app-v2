@@ -1,9 +1,10 @@
 import React from "react"
-import { useWeather } from "../../providers/weatherContext"
-import DailyDetail from "./DailyDetail"
-import type { ForecastItem } from "../../types/forecast"
-import type ForecastData from "../../types/forecast"
-import DailyWidgetSkeleton from "../common/skeletons/DailyWidgetSkeleton"
+import { useWeather } from "../../../providers/weatherContext"
+import DailyDetail from "../DailyDetail/DailyDetail"
+import type { ForecastItem } from "../../../types/forecast"
+import type ForecastData from "../../../types/forecast"
+import DailyWidgetSkeleton from "../../common/skeletons/DailyWidgetSkeleton"
+import "./DailyWidget.scss"
 
 const DailyWidget: React.FC = () => {
   // Retrieve forecast data from the weather context

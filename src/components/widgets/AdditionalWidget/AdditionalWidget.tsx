@@ -1,10 +1,11 @@
 import React from "react"
-import { useWeather } from "../../providers/weatherContext"
-import Sunrise from "../../assets/images/day-image.png"
-import Sunset from "../../assets/images/night-image.png"
-import { getHour } from "../../utils/index"
-import AdditionalWidgetSkeleton from "../common/skeletons/AdditionalWidgetSkeleton"
-import type WeatherData from "../../types/weather"
+import { useWeather } from "../../../providers/weatherContext"
+import Sunrise from "../../../assets/images/day-image.png"
+import Sunset from "../../../assets/images/night-image.png"
+import { getHour } from "../../../utils/index"
+import AdditionalWidgetSkeleton from "../../common/skeletons/AdditionalWidgetSkeleton"
+import type WeatherData from "../../../types/weather"
+import "./AdditionalWidget.scss"
 
 const AdditionalWidget: React.FC = () => {
   const { weatherData } = useWeather()

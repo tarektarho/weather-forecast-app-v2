@@ -1,7 +1,8 @@
 import React from "react"
-import { useWeather } from "../../providers/weatherContext"
-import AirPollutionWidgetSkeleton from "../common/skeletons/AirPollutionWidgetSkeleton"
-import type AirPollutionData from "../../types/airPollution"
+import { useWeather } from "../../../providers/weatherContext"
+import AirPollutionWidgetSkeleton from "../../common/skeletons/AirPollutionWidgetSkeleton"
+import type AirPollutionData from "../../../types/airPollution"
+import "./AirPollutionWidget.scss"
 
 // https://openweathermap.org/api/air-pollution
 // Air pollution quality descriptions

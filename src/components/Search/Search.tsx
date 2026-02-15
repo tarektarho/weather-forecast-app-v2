@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react"
-import { useWeather } from "../providers/weatherContext"
+import { useWeather } from "../../providers/weatherContext"
+import "./Search.scss"
 
 const Search: React.FC = () => {
   const { city, setCity, searchByCity } = useWeather()
