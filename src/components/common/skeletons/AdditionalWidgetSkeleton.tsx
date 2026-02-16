@@ -1,9 +1,9 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
 import additionalStyles from "../../widgets/AdditionalWidget/styles.module.scss"
 import skeletonStyles from "./styles.module.scss"
 
-const AdditionalWidgetSkeleton: React.FC = () => {
+const AdditionalWidgetSkeleton: FC = () => {
   return (
     <div className={`weather-extra-wrapper ${additionalStyles.myOtherStep}`}>
       {/* Widget title */}

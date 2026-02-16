@@ -26,6 +26,10 @@ coverage
 # Production
 build
 
+# Environment
+.env
+.env.local
+
 # Miscellaneous
 *.local
 

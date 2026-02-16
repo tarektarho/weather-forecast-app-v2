@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import styles from "./styles.module.scss"
 import { LOCAL_STORAGE_KEY_WELCOME_MODAL } from "../../utils/constants"
 import { useWeather } from "../../providers/weatherContext"
@@ -11,7 +11,7 @@ import Search from "../Search/Search"
 import Modal from "../Modal/Modal"
 import { getLocalStorageItem } from "../../utils"
 
-const Dashboard: React.FC = () => {
+const Dashboard: FC = () => {
   // Fetch necessary data and functions from the WeatherContext
   const { modal, hideModal, weatherData, error, hideError, info, setInfo } =
     useWeather()

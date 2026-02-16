@@ -1,9 +1,9 @@
-import React from "react"
+import type { FC } from "react"
 import Dashboard from "./components/Dashboard/Dashboard"
 import { WeatherProvider } from "./providers/weatherProvider"
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
     <ErrorBoundary>
       <WeatherProvider>

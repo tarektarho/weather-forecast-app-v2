@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import { useWeather } from "../../../providers/weatherContext"
 import {
   getWeatherIcon,
@@ -11,7 +11,7 @@ import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"
 import type WeatherData from "../../../types/weather"
 import styles from "./styles.module.scss"
 
-const CurrentWidget: React.FC = () => {
+const CurrentWidget: FC = () => {
   // Get weatherData and copyShareUrl from the weather context
   const { weatherData, copyShareUrl } = useWeather()
 
@@ -69,7 +69,12 @@ const CurrentWidget: React.FC = () => {
           </div>
         </div>
         <h2 data-testid="city-name">{location}</h2>
-        <img className={styles.icon} src={getWeatherIcon(icon)} alt={icon} />
+        <img
+          className={styles.icon}
+          src={getWeatherIcon(icon)}
+          alt={icon}
+          loading="lazy"
+        />
         <p className={styles.weatherText}>{description}</p>
         <h3 className={styles.weatherTemp}>{convertKelvinToCelsius(temp)}º</h3>
         <p className={styles.weatherText}>{mainDetail}</p>

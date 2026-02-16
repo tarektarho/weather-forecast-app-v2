@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import ErrorIcon from "../../assets/images/error.png"
 import CloseIcon from "../../assets/images/close.png"
 import styles from "./styles.module.scss"
@@ -11,7 +11,7 @@ interface NotificationProps {
 }
 
 // The Notification component displays a notification with a message, icon, and close button.
-const Notification: React.FC<NotificationProps> = ({
+const Notification: FC<NotificationProps> = ({
   message,
   hideNotification,
   type,
@@ -42,7 +42,12 @@ const Notification: React.FC<NotificationProps> = ({
         {renderIcon()}
         <p>{message}</p> {/* Display the notification message. */}
       </div>
-      <div onClick={hideNotification} data-testid="close-icon">
+      <div
+        onClick={hideNotification}
+        data-testid="close-icon"
+        role="button"
+        aria-label="Close notification"
+      >
         <img className={styles.closeIcon} src={CloseIcon} alt="closeIcon" />{" "}
         {/* Display the close icon. */}
       </div>

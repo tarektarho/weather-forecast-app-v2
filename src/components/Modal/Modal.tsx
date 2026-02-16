@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import MapImg from "../../assets/images/map.jpeg"
 import packageJson from "../../../package.json"
 import styles from "./styles.module.scss"
@@ -9,7 +9,7 @@ interface ModalProps {
 }
 
 // The Modal component displays information about the WeatherForecastApp and its features.
-const Modal: React.FC<ModalProps> = ({ hideModal }) => {
+const Modal: FC<ModalProps> = ({ hideModal }) => {
   // List of features provided by the app.
   const appFeatures = [
     "Get real-time weather with Geolocation.",
@@ -49,6 +49,7 @@ const Modal: React.FC<ModalProps> = ({ hideModal }) => {
             className={styles.modalContinueBtn}
             onClick={hideModal}
             data-testid="hide-modal-btn"
+            aria-label="Continue to application"
           >
             Continue
           </button>
