@@ -1,17 +1,25 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
+import currentWidgetStyles from "../../widgets/CurrentWidget/styles.module.scss"
+import skeletonStyles from "./styles.module.scss"
 
-const CurrentWidgetSkeleton: React.FC = () => {
+const CurrentWidgetSkeleton: FC = () => {
   return (
     <>
       <SkeletonElement
-        type="widget weather-detail"
+        className={`widget ${currentWidgetStyles.weatherDetail}`}
         role="current-widget-skeleton"
       />
       <div className="weather-extra-wrapper">
-        <SkeletonElement type="widget weather-extra bg-extra1" />
-        <SkeletonElement type="widget weather-extra bg-extra2" />
-        <SkeletonElement type="widget weather-extra bg-extra3" />
+        <SkeletonElement
+          className={`widget ${skeletonStyles.weatherExtraSm}`}
+        />
+        <SkeletonElement
+          className={`widget ${skeletonStyles.weatherExtraSm}`}
+        />
+        <SkeletonElement
+          className={`widget ${skeletonStyles.weatherExtraSm}`}
+        />
       </div>
     </>
   )

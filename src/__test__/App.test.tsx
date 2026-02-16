@@ -10,7 +10,7 @@ vi.mock("../providers/weatherProvider", () => ({
 }))
 
 // Mock Dashboard component
-vi.mock("../components/Dashboard", () => ({
+vi.mock("../components/Dashboard/Dashboard", () => ({
   default: () => <div data-testid="dashboard-mock">Dashboard Component</div>,
 }))
 

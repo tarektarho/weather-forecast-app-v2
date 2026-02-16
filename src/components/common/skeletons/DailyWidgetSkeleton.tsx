@@ -1,14 +1,19 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
 import DailyDetailSkeleton from "./DailyDetailSkeleton"
+import dailyWidgetStyles from "../../widgets/DailyWidget/styles.module.scss"
+import skeletonStyles from "./styles.module.scss"
 
-const DailyWidgetSkeleton: React.FC = () => {
+const DailyWidgetSkeleton: FC = () => {
   return (
     <>
-      <SkeletonElement type="forecast-title" role="daily-widget-skeleton" />
-      <div className="daily-container">
-        <div className="daily-wrapper">
-          {[1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+      <SkeletonElement
+        className={skeletonStyles.forecastTitle}
+        role="daily-widget-skeleton"
+      />
+      <div className={dailyWidgetStyles.dailyContainer}>
+        <div className={dailyWidgetStyles.dailyWrapper}>
+          {[1, 2, 3, 4, 5, 6, 7].map((_, index) => (
             <DailyDetailSkeleton key={index} />
           ))}
         </div>

@@ -1,11 +1,13 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
+import searchStyles from "../../Search/styles.module.scss"
+import skeletonStyles from "./styles.module.scss"
 
-const SearchSkeleton: React.FC = () => {
+const SearchSkeleton: FC = () => {
   return (
-    <div className="search">
-      <SkeletonElement type="input" role="search" />
-      <SkeletonElement type="button" role="button" />
+    <div className={searchStyles.search}>
+      <SkeletonElement className={skeletonStyles.input} role="search" />
+      <SkeletonElement className={skeletonStyles.button} role="button" />
     </div>
   )
 }

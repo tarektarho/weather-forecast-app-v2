@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useOptimistic } from "react"
+import { useEffect, useState, useOptimistic } from "react"
+import type { FC, ReactNode } from "react"
 import { useDispatch } from "react-redux"
 import { WeatherContext } from "./weatherContext"
 import {
@@ -21,7 +22,7 @@ import { ERROR_BROWSER_GEOLOCATION_OFF } from "../utils/constants"
 import type { AppDispatch } from "../store/types"
 
 interface WeatherProviderProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 /**
@@ -45,9 +46,7 @@ function resolveInitialCoords(): { lat?: number; lon?: number } {
   return {}
 }
 
-export const WeatherProvider: React.FC<WeatherProviderProps> = ({
-  children,
-}) => {
+export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const dispatch: AppDispatch = useDispatch<AppDispatch>()
 
   // Component states
@@ -59,27 +58,25 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
 
   // React 19: useOptimistic for immediate UI updates during search
   const [optimisticCity, setOptimisticCity] = useOptimistic(city)
-  const [lat, setLat] = useState<number | undefined>(
-    () => resolveInitialCoords().lat,
-  )
-  const [lon, setLon] = useState<number | undefined>(
-    () => resolveInitialCoords().lon,
-  )
+  const [coords, setCoords] = useState<{
+    lat?: number
+    lon?: number
+  }>(() => resolveInitialCoords())
 
   // RTK Query hooks – skip when args aren't ready
-  const hasCoords = lat !== undefined && lon !== undefined
+  const hasCoords = coords.lat !== undefined && coords.lon !== undefined
   const hasCity = searchCity !== ""
 
   const weatherByLatLon = useGetWeatherByLatLonQuery(
-    hasCoords ? { lat, lon } : { lat: 0, lon: 0 },
+    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
     { skip: !hasCoords || hasCity },
   )
   const forecastByLatLon = useGetForecastByLatLonQuery(
-    hasCoords ? { lat, lon } : { lat: 0, lon: 0 },
+    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
     { skip: !hasCoords || hasCity },
   )
   const airPollutionByLatLon = useGetAirPollutionByLatLonQuery(
-    hasCoords ? { lat, lon } : { lat: 0, lon: 0 },
+    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
     { skip: !hasCoords || hasCity },
   )
 
@@ -123,8 +120,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
     Utils.getBrowserGeoPosition()
       .then(({ latitude, longitude }) => {
         if (controller.signal.aborted) return
-        setLat(latitude)
-        setLon(longitude)
+        setCoords({ lat: latitude, lon: longitude })
         Utils.savePosition(latitude, longitude)
       })
       .catch((err) => {
@@ -166,10 +162,6 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
     hideError,
     city: optimisticCity,
     setCity,
-    lat,
-    setLat,
-    lon,
-    setLon,
     modal,
     hideModal,
     info,

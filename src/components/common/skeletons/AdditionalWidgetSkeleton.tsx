@@ -1,16 +1,22 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
+import additionalStyles from "../../widgets/AdditionalWidget/styles.module.scss"
+import skeletonStyles from "./styles.module.scss"
 
-const AdditionalWidgetSkeleton: React.FC = () => {
+const AdditionalWidgetSkeleton: FC = () => {
   return (
-    <div className="weather-extra-wrapper my-other-step">
+    <div className={`weather-extra-wrapper ${additionalStyles.myOtherStep}`}>
       {/* Widget title */}
-      <SkeletonElement type="long-title" />
+      <SkeletonElement className={skeletonStyles.longTitle} />
       <div className="extra-info-container">
         {/* Sunrise information */}
-        <SkeletonElement type="skeleton widget weather-extra bg-extra4" />
+        <SkeletonElement
+          className={`widget ${skeletonStyles.weatherExtraLg}`}
+        />
         {/* Sunset information */}
-        <SkeletonElement type="skeleton widget weather-extra bg-extra4 mb-0" />
+        <SkeletonElement
+          className={`widget ${skeletonStyles.weatherExtraLg} mb-0`}
+        />
       </div>
     </div>
   )
