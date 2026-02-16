@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import { useWeather } from "../../../providers/weatherContext"
 import Sunrise from "../../../assets/images/day-image.png"
 import Sunset from "../../../assets/images/night-image.png"
@@ -7,7 +7,7 @@ import AdditionalWidgetSkeleton from "../../common/skeletons/AdditionalWidgetSke
 import type WeatherData from "../../../types/weather"
 import styles from "./styles.module.scss"
 
-const AdditionalWidget: React.FC = () => {
+const AdditionalWidget: FC = () => {
   const { weatherData } = useWeather()
 
   // Check if weather data is not available
@@ -44,13 +44,23 @@ const AdditionalWidget: React.FC = () => {
       <div className="extra-info-container">
         {/* Sunrise information */}
         <div className="widget weather-extra bg-extra1">
-          <img className="weather-extra-img" src={Sunrise} alt="sunrise" />
+          <img
+            className="weather-extra-img"
+            src={Sunrise}
+            alt="sunrise"
+            loading="lazy"
+          />
           {/* Display the sunrise time */}
           <h4 data-testid="sunrise">{getHour(sunrise)}</h4>
         </div>
         {/* Sunset information */}
         <div className="widget weather-extra bg-extra4 mb-0">
-          <img className="weather-extra-img" src={Sunset} alt="sunset" />
+          <img
+            className="weather-extra-img"
+            src={Sunset}
+            alt="sunset"
+            loading="lazy"
+          />
           {/* Display the sunset time */}
           <h4 data-testid="sunset">{getHour(sunset)}</h4>
         </div>

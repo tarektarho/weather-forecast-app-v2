@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from "react"
+import type { FC } from "react"
+import { useCallback, useEffect } from "react"
 import { useWeather } from "../../providers/weatherContext"
 import styles from "./styles.module.scss"
 
-const Search: React.FC = () => {
+const Search: FC = () => {
   const { city, setCity, searchByCity } = useWeather()
 
   const handleSearch = useCallback(() => {

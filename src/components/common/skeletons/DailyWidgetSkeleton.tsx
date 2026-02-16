@@ -1,10 +1,10 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
 import DailyDetailSkeleton from "./DailyDetailSkeleton"
 import dailyWidgetStyles from "../../widgets/DailyWidget/styles.module.scss"
 import skeletonStyles from "./styles.module.scss"
 
-const DailyWidgetSkeleton: React.FC = () => {
+const DailyWidgetSkeleton: FC = () => {
   return (
     <>
       <SkeletonElement

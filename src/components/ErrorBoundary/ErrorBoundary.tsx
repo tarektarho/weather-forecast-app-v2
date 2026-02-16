@@ -1,5 +1,5 @@
 import type { ReactNode, ErrorInfo } from "react"
-import React, { Component } from "react"
+import { Component } from "react"
 import styles from "./styles.module.scss"
 
 interface ErrorBoundaryProps {

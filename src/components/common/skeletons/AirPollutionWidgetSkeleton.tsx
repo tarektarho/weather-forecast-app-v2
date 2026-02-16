@@ -1,9 +1,9 @@
-import React from "react"
+import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
 import skeletonStyles from "./styles.module.scss"
 import airPollutionStyles from "../../widgets/AirPollutionWidget/styles.module.scss"
 
-const AirPollutionWidgetSkeleton: React.FC = () => {
+const AirPollutionWidgetSkeleton: FC = () => {
   return (
     <>
       <div className={`${airPollutionStyles.airTitle} mb-8`}>

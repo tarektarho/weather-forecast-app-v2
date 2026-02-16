@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import { useWeather } from "../../../providers/weatherContext"
 import AirPollutionWidgetSkeleton from "../../common/skeletons/AirPollutionWidgetSkeleton"
 import type AirPollutionData from "../../../types/airPollution"
@@ -6,15 +6,15 @@ import styles from "./styles.module.scss"
 
 // https://openweathermap.org/api/air-pollution
 // Air pollution quality descriptions
-const airPollutionQuality: Record<string, string> = {
-  "1": "Good Quality",
-  "2": "Fair Quality",
-  "3": "Moderate Quality",
-  "4": "Poor Quality",
-  "5": "Very Poor Quality",
+const AIR_QUALITY_LABELS: Record<number, string> = {
+  1: "Good",
+  2: "Fair",
+  3: "Moderate",
+  4: "Poor",
+  5: "Very Poor",
 }
 
-const AirPollutionWidget: React.FC = () => {
+const AirPollutionWidget: FC = () => {
   const { airPollutionData } = useWeather()
 
   // Check if air pollution data is not available
@@ -67,7 +67,9 @@ const AirPollutionWidget: React.FC = () => {
         <h4 data-testid="airpollution-widget-title">
           Your Current Air Pollution
         </h4>
-        <h3 className={styles.airQuality}>{airPollutionQuality[quality]}</h3>
+        <h3 className={styles.airQuality}>
+          {AIR_QUALITY_LABELS[quality] ?? "Unknown"}
+        </h3>
       </div>
       <div className="flex-wrap">
         {pollutionComponents &&

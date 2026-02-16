@@ -1,5 +1,4 @@
-import type { Dispatch } from "react"
-import type React from "react"
+import type { Dispatch, SetStateAction } from "react"
 import { createContext, useContext } from "react"
 import type WeatherData from "../types/weather"
 import type ForecastData from "../types/forecast"
@@ -21,7 +20,7 @@ export interface QueryResult<T> {
  */
 export interface WeatherContextValue {
   city: string
-  setCity: React.Dispatch<React.SetStateAction<string>>
+  setCity: Dispatch<SetStateAction<string>>
   searchByCity: (city?: string) => void
   weatherData: QueryResult<WeatherData>
   forecastData: QueryResult<ForecastData>
@@ -32,8 +31,8 @@ export interface WeatherContextValue {
   error: string | undefined
   hideError: () => void
   info: string | undefined
-  setInfo: Dispatch<React.SetStateAction<string | undefined>>
-  setError: Dispatch<React.SetStateAction<string | undefined>>
+  setInfo: Dispatch<SetStateAction<string | undefined>>
+  setError: Dispatch<SetStateAction<string | undefined>>
 }
 
 /**

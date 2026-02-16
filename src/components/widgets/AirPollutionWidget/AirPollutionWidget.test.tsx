@@ -121,11 +121,11 @@ describe("AirPollutionWidget", () => {
   })
 
   it.each([
-    [1, "Good Quality"],
-    [2, "Fair Quality"],
-    [3, "Moderate Quality"],
-    [4, "Poor Quality"],
-    [5, "Very Poor Quality"],
+    [1, "Good"],
+    [2, "Fair"],
+    [3, "Moderate"],
+    [4, "Poor"],
+    [5, "Very Poor"],
   ])("displays '%s' quality as '%s'", (aqi, label) => {
     mockUseWeather.mockReturnValue(
       mockContext({ data: makeAirPollutionData(aqi), isSuccess: true }),
@@ -139,8 +139,8 @@ describe("AirPollutionWidget", () => {
       mockContext({ data: makeAirPollutionData(0), isSuccess: true }),
     )
     render(<AirPollutionWidget />)
-    // AQI 0 is not in the quality map, so the h3 should be empty
-    expect(screen.getByTestId("airpollution-widget-title")).toBeInTheDocument()
+    // AQI 0 is not in the quality map, so the h3 should show "Unknown"
+    expect(screen.getByText("Unknown")).toBeInTheDocument()
   })
 
   it("renders all 8 pollution component cards", () => {

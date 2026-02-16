@@ -1,4 +1,4 @@
-import React from "react"
+import type { FC } from "react"
 import styles from "./styles.module.scss"
 
 interface SkeletonProps {
@@ -6,7 +6,7 @@ interface SkeletonProps {
   role?: string
 }
 
-const SkeletonElement: React.FC<SkeletonProps> = ({ className, role }) => {
+const SkeletonElement: FC<SkeletonProps> = ({ className, role }) => {
   const classes = `${styles.skeleton} ${className || ""}`.trim()
 
   return (
