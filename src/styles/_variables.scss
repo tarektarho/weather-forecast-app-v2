@@ -1,15 +1,4 @@
-$white: #ffffff;
-$blue: #42a5f5;
-$medium-blue: #29b6f6;
-$blue-hover: #039ce0;
-$light-blue: #b3e5fc;
-$light-gray: #f8f8f8;
-$gray: #e0e0e0;
-$dark-gray: #9e9e9e;
-$dark: #292a35;
-$light-orange: #ffe6b9;
-$light-green: #dcedc8;
-$light-red: #ffcdd2;
-$plain-red: #ef5350;
-$plain-blue: #03a9f4;
+@forward "./colors";
+
+// Shared design tokens
 $box-shadow: 7px 7px 15px -10px rgba(37, 38, 49, 0.31);

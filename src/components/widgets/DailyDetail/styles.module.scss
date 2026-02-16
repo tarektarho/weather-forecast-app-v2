@@ -1,0 +1,49 @@
+@use "../../../styles/variables" as *;
+
+.daily-item {
+  width: 210px;
+  height: 280px;
+  margin-right: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.4s;
+
+  &:hover:not([data-skeleton]) {
+    transform: scale(1.1);
+  }
+
+  &:nth-child(1):not([data-skeleton]) {
+    background: $light-blue;
+  }
+
+  &[data-skeleton] {
+    background: $skeleton-gray;
+  }
+
+  .icon {
+    display: block;
+    width: 90px;
+    margin: 0 auto;
+  }
+
+  .daily-temp {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .daily-text {
+    color: $dark;
+  }
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+  .daily-item .icon {
+    width: 120px;
+  }
+}

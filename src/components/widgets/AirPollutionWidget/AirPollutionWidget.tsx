@@ -1,0 +1,90 @@
+import type { FC } from "react"
+import { useWeather } from "../../../providers/weatherContext"
+import AirPollutionWidgetSkeleton from "../../common/skeletons/AirPollutionWidgetSkeleton"
+import type AirPollutionData from "../../../types/airPollution"
+import styles from "./styles.module.scss"
+
+// https://openweathermap.org/api/air-pollution
+// Air pollution quality descriptions
+const AIR_QUALITY_LABELS: Record<number, string> = {
+  1: "Good",
+  2: "Fair",
+  3: "Moderate",
+  4: "Poor",
+  5: "Very Poor",
+}
+
+const AirPollutionWidget: FC = () => {
+  const { airPollutionData } = useWeather()
+
+  // Check if air pollution data is not available
+  if (!airPollutionData || !airPollutionData.data) {
+    return <AirPollutionWidgetSkeleton />
+  }
+
+  // Type guard to check if data is AirPollutionData
+  const isAirPollutionData = (data: unknown): data is AirPollutionData => {
+    return (
+      typeof data === "object" &&
+      data !== null &&
+      "list" in data &&
+      Array.isArray((data as AirPollutionData).list)
+    )
+  }
+
+  // Check if air pollution data is loading or not valid
+  if (
+    airPollutionData.isLoading ||
+    airPollutionData.isFetching ||
+    !isAirPollutionData(airPollutionData.data)
+  ) {
+    return <AirPollutionWidgetSkeleton />
+  }
+
+  // Extract the pollution information from the data
+  const pollutionInfo = airPollutionData.data.list[0]
+  const { main, components } = pollutionInfo
+  const { aqi } = main
+
+  // Calculate the air quality index (AQI) and ensure it's a whole number.
+  const quality = Math.trunc(Math.floor(aqi))
+
+  // Array of air pollution components
+  const pollutionComponents = [
+    { label: "CO", value: components.co },
+    { label: "Nh3", value: components.nh3 },
+    { label: "NO", value: components.no },
+    { label: "No2", value: components.no2 },
+    { label: "O3", value: components.o3 },
+    { label: "Pm2 5", value: components.pm2_5 },
+    { label: "Pm 10", value: components.pm10 },
+    { label: "So2", value: components.so2 },
+  ]
+
+  return (
+    <>
+      <div className={styles.airTitle}>
+        <h4 data-testid="airpollution-widget-title">
+          Your Current Air Pollution
+        </h4>
+        <h3 className={styles.airQuality}>
+          {AIR_QUALITY_LABELS[quality] ?? "Unknown"}
+        </h3>
+      </div>
+      <div className="flex-wrap">
+        {pollutionComponents &&
+          pollutionComponents.map((component, index) => (
+            <div className={styles.airData} key={index}>
+              <span className={styles.airDataIndex}>{index + 1}</span>
+              <h4 className={styles.airDataLabel}>{component.label}</h4>
+              <p className={styles.airDataValue} data-testid="airpollution-co">
+                {component.value}
+              </p>
+            </div>
+          ))}
+      </div>
+    </>
+  )
+}
+
+export default AirPollutionWidget

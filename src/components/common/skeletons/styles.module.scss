@@ -1,0 +1,65 @@
+@use "../../../styles/variables" as *;
+
+/* Basic styles */
+.skeleton {
+  background-color: $skeleton-gray;
+  overflow: hidden;
+  border-radius: 4px;
+  animation: pulse 1s ease-in-out infinite;
+
+  &.input {
+    width: 171px;
+    height: 42px;
+    margin-right: 8px;
+  }
+
+  &.button {
+    width: 113px;
+    height: 42px;
+  }
+
+  &.title {
+    width: 185px;
+    height: 45px;
+  }
+
+  &.long-title {
+    width: 240px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  &.forecast-title {
+    width: 185px;
+    height: 42px;
+    margin-left: 16px;
+  }
+
+  &.weather-extra-sm {
+    height: 70px;
+  }
+
+  &.weather-extra-lg {
+    height: 105px;
+  }
+}
+
+/* Animation effects */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.skeleton-container {
+  margin: 0 10px 0 10px;
+  background-color: $skeleton-gray;
+  border-radius: 4px;
+  animation: pulse 1s ease-in-out infinite;
+}

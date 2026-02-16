@@ -1,0 +1,7 @@
+@use "../../../styles/variables" as *;
+
+.my-other-step {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}

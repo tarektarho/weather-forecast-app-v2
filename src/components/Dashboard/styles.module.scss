@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.main-container {
+  color: $blue;
+  position: relative;
+}
+
+.title {
+  padding-bottom: 12px;
+  padding-left: 16px;
+  color: orange;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-title {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-bottom: 18px;
+}
+
+.detail-content {
+  padding: 12px 24px;
+}
+
+.main-content {
+  padding: 24px 12px;
+  background-color: $light-gray;
+}
+
+
+
+/* TABLET */
+@media (min-width: 768px) {
+  .main-title {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+
+  .detail-content,
+  .flex-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .detail-content {
+    align-items: center;
+  }
+
+  .flex-wrapper {
+    align-items: flex-start;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 1200px) {
+  .main-title {
+    margin-bottom: 12px;
+  }
+
+  .main-wrapper {
+    height: 100vh;
+    flex-direction: row;
+    min-height: 750px;
+  }
+
+  .main-content {
+    width: 70%;
+  }
+
+  .detail-content {
+    width: 30%;
+    padding-top: 24px;
+    flex-direction: column;
+  }
+}

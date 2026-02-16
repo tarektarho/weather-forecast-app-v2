@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react"
-import type React from "react"
+import type { ReactNode } from "react"
 import { describe, it, expect, vi } from "vitest"
 import {
   WeatherContext,
@@ -73,7 +73,7 @@ describe("useWeather", () => {
   it("returns context value when used inside WeatherProvider", () => {
     const mockValue = createMockContextValue({ city: "Berlin" })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <WeatherContext.Provider value={mockValue}>
         {children}
       </WeatherContext.Provider>
@@ -88,7 +88,7 @@ describe("useWeather", () => {
   it("exposes all expected properties", () => {
     const mockValue = createMockContextValue()
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <WeatherContext.Provider value={mockValue}>
         {children}
       </WeatherContext.Provider>
@@ -115,7 +115,7 @@ describe("useWeather", () => {
   it("reflects updated context values on re-render", () => {
     const initialValue = createMockContextValue({ city: "Paris" })
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <WeatherContext.Provider value={initialValue}>
         {children}
       </WeatherContext.Provider>
@@ -128,7 +128,7 @@ describe("useWeather", () => {
     // Simulate a context update by re-rendering with a new value
     const updatedValue = createMockContextValue({ city: "London" })
 
-    const updatedWrapper = ({ children }: { children: React.ReactNode }) => (
+    const updatedWrapper = ({ children }: { children: ReactNode }) => (
       <WeatherContext.Provider value={updatedValue}>
         {children}
       </WeatherContext.Provider>
@@ -143,7 +143,7 @@ describe("useWeather", () => {
   it("returns query data shapes with correct defaults", () => {
     const mockValue = createMockContextValue()
 
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
+    const wrapper = ({ children }: { children: ReactNode }) => (
       <WeatherContext.Provider value={mockValue}>
         {children}
       </WeatherContext.Provider>

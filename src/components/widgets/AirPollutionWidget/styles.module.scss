@@ -1,0 +1,56 @@
+@use "../../../styles/variables" as *;
+
+.air-title {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .air-quality {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 12px 0;
+  }
+}
+
+.air-data {
+  width: 70px;
+  height: 80px;
+  position: relative;
+  color: $blue;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+  background-color: $light-orange;
+  transition: 0.4s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &[data-skeleton] {
+    background-color: $skeleton-gray;
+  }
+
+  .air-data-index {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 6px;
+    width: fit-content;
+  }
+
+  .air-data-label {
+    font-weight: 800;
+    font-size: 14px;
+  }
+
+  .air-data-value {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}

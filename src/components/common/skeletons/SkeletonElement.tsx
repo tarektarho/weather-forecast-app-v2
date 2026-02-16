@@ -1,16 +1,21 @@
-import React from "react"
-import "./Skeleton.scss"
+import type { FC } from "react"
+import styles from "./styles.module.scss"
 
 interface SkeletonProps {
-  type: string
+  className?: string
   role?: string
 }
 
-const SkeletonElement: React.FC<SkeletonProps> = ({ type, role }) => {
-  const classes = `skeleton ${type}`
+const SkeletonElement: FC<SkeletonProps> = ({ className, role }) => {
+  const classes = `${styles.skeleton} ${className || ""}`.trim()
 
   return (
-    <div data-testid="skeleton-test-id" className={classes} role={role}></div>
+    <div
+      data-testid="skeleton-test-id"
+      data-skeleton
+      className={classes}
+      role={role}
+    ></div>
   )
 }
 
