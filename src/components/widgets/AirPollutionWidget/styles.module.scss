@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
 
-  h3 {
+  .air-quality {
     font-size: 32px;
     font-weight: 800;
     margin: 12px 0;
@@ -32,7 +32,11 @@
     transform: scale(1.1);
   }
 
-  span {
+  &[data-skeleton] {
+    background-color: $skeleton-gray;
+  }
+
+  .air-data-index {
     position: absolute;
     display: inline-block;
     top: 3px;
@@ -40,29 +44,13 @@
     width: fit-content;
   }
 
-  h4 {
+  .air-data-label {
     font-weight: 800;
     font-size: 14px;
   }
 
-  p {
+  .air-data-value {
     font-weight: 600;
     font-size: 14px;
-  }
-}
-
-.flex-wrap {
-  max-width: 370px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-/* MOBILE */
-@media only screen and (max-width: 430px) {
-  .flex-wrap {
-    justify-content: center;
   }
 }

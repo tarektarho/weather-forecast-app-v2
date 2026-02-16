@@ -13,12 +13,16 @@
   align-items: center;
   transition: 0.4s;
 
-  &:hover:not(.skeleton) {
+  &:hover:not([data-skeleton]) {
     transform: scale(1.1);
   }
 
-  &:nth-child(1):not(.skeleton) {
+  &:nth-child(1):not([data-skeleton]) {
     background: $light-blue;
+  }
+
+  &[data-skeleton] {
+    background: $skeleton-gray;
   }
 
   .icon {
@@ -27,12 +31,12 @@
     margin: 0 auto;
   }
 
-  h3 {
+  .daily-temp {
     font-size: 20px;
     margin-bottom: 12px;
   }
 
-  p {
+  .daily-text {
     color: $dark;
   }
 }

@@ -9,7 +9,7 @@ import shareIcon from "../../../assets/images/share.png"
 import resetIcon from "../../../assets/images/reset.png"
 import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"
 import type WeatherData from "../../../types/weather"
-import "./CurrentWidget.scss"
+import styles from "./styles.module.scss"
 
 const CurrentWidget: React.FC = () => {
   // Get weatherData and copyShareUrl from the weather context
@@ -49,57 +49,68 @@ const CurrentWidget: React.FC = () => {
   // Return the CurrentWidget component with weather information
   return (
     <>
-      <div className="widget weather-detail">
-        <div className="widget-actions">
-          <div className="icons-container" title="Reset" hidden>
+      <div className={`widget ${styles.weatherDetail}`}>
+        <div className={styles.widgetActions}>
+          <div className={styles.iconsContainer} title="Reset" hidden>
             <img
               onClick={resetApp}
-              className="current-widget-icon"
+              className={styles.currentWidgetIcon}
               src={resetIcon}
               alt="Reset"
             />
           </div>
-          <div className="icons-container" title="Share">
+          <div className={styles.iconsContainer} title="Share">
             <img
               onClick={copyShareUrl}
-              className="current-widget-icon"
+              className={styles.currentWidgetIcon}
               src={shareIcon}
               alt="Share"
             />
           </div>
         </div>
         <h2 data-testid="city-name">{location}</h2>
-        <img className="icon" src={getWeatherIcon(icon)} alt={icon} />
-        <p>{description}</p>
-        <h3>{convertKelvinToCelsius(temp)}º</h3>
-        <p>{mainDetail}</p>
+        <img className={styles.icon} src={getWeatherIcon(icon)} alt={icon} />
+        <p className={styles.weatherText}>{description}</p>
+        <h3 className={styles.weatherTemp}>{convertKelvinToCelsius(temp)}º</h3>
+        <p className={styles.weatherText}>{mainDetail}</p>
       </div>
       <div className="weather-extra-wrapper">
         <div className="widget weather-extra bg-extra1">
           <p>
-            <span>Temp</span> | <span>{convertKelvinToCelsius(temp)}º</span>
+            <span className="weather-extra-label">Temp</span> |{" "}
+            <span className="weather-extra-label">
+              {convertKelvinToCelsius(temp)}º
+            </span>
           </p>
           <p>
-            <span>Feels like</span> |{" "}
-            <span>{convertKelvinToCelsius(feels_like)}º</span>
+            <span className="weather-extra-label">Feels like</span> |{" "}
+            <span className="weather-extra-label">
+              {convertKelvinToCelsius(feels_like)}º
+            </span>
           </p>
         </div>
         <div className="widget weather-extra bg-extra2">
           <p>
-            <span>Humidity</span> | <span>{humidity}%</span>
+            <span className="weather-extra-label">Humidity</span> |{" "}
+            <span className="weather-extra-label">{humidity}%</span>
           </p>
           <p>
-            <span>Pressure</span> | <span>{pressure}</span>
+            <span className="weather-extra-label">Pressure</span> |{" "}
+            <span className="weather-extra-label">{pressure}</span>
           </p>
         </div>
         <div className="widget weather-extra bg-extra3">
           <p>
-            <span>Temp max</span> |{" "}
-            <span>{convertKelvinToCelsius(temp_max)}º</span>
+            <span className="weather-extra-label">Temp max</span> |{" "}
+            <span className="weather-extra-label">
+              {convertKelvinToCelsius(temp_max)}º
+            </span>
           </p>
           <p>
-            <span>Temp min</span> |{" "}
-            <span>{convertKelvinToCelsius(temp_min)}º</span>
+            <span className="weather-extra-label">Temp min</span> |{" "}
+            <span className="weather-extra-label">
+              {convertKelvinToCelsius(temp_min)}º
+            </span>
           </p>
         </div>
       </div>

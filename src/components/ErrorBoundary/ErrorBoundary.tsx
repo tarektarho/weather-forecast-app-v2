@@ -1,5 +1,6 @@
 import type { ReactNode, ErrorInfo } from "react"
 import React, { Component } from "react"
+import styles from "./styles.module.scss"
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -64,22 +65,22 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
       // Default fallback UI
       return (
-        <div className="error-boundary-container" style={styles.container}>
-          <div style={styles.content}>
-            <h1 style={styles.title}>Oops! Something went wrong</h1>
-            <p style={styles.message}>
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <h1 className={styles.title}>Oops! Something went wrong</h1>
+            <p className={styles.message}>
               We're sorry, but something unexpected happened. Please try again.
             </p>
             {import.meta.env.DEV && this.state.error && (
-              <details style={styles.details}>
-                <summary style={styles.summary}>Error Details</summary>
-                <pre style={styles.errorText}>
+              <details className={styles.details}>
+                <summary className={styles.summary}>Error Details</summary>
+                <pre className={styles.errorText}>
                   {this.state.error.toString()}
                   {this.state.errorInfo?.componentStack}
                 </pre>
               </details>
             )}
-            <button onClick={this.handleReset} style={styles.button}>
+            <button onClick={this.handleReset} className={styles.button}>
               Reload Application
             </button>
           </div>
@@ -89,68 +90,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
     return this.props.children
   }
-}
-
-// Inline styles for the error boundary fallback UI
-const styles = {
-  container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    backgroundColor: "#f5f5f5",
-    padding: "20px",
-  },
-  content: {
-    maxWidth: "600px",
-    backgroundColor: "white",
-    padding: "40px",
-    borderRadius: "8px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    textAlign: "center" as const,
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold" as const,
-    color: "#333",
-    marginBottom: "16px",
-  },
-  message: {
-    fontSize: "16px",
-    color: "#666",
-    marginBottom: "24px",
-    lineHeight: "1.5",
-  },
-  details: {
-    textAlign: "left" as const,
-    marginBottom: "24px",
-    padding: "16px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "4px",
-    border: "1px solid #ddd",
-  },
-  summary: {
-    cursor: "pointer",
-    fontWeight: "bold" as const,
-    marginBottom: "8px",
-  },
-  errorText: {
-    fontSize: "12px",
-    color: "#d32f2f",
-    overflow: "auto",
-    maxHeight: "200px",
-  },
-  button: {
-    padding: "12px 24px",
-    fontSize: "16px",
-    fontWeight: "bold" as const,
-    color: "white",
-    backgroundColor: "#007bff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    transition: "background-color 0.2s",
-  },
 }
 
 export default ErrorBoundary

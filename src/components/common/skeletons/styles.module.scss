@@ -1,6 +1,8 @@
+@use "../../../styles/variables" as *;
+
 /* Basic styles */
 .skeleton {
-  background: #ddd;
+  background-color: $skeleton-gray;
   overflow: hidden;
   border-radius: 4px;
   animation: pulse 1s ease-in-out infinite;
@@ -33,17 +35,13 @@
     margin-left: 16px;
   }
 
-  &.weather-extra {
+  &.weather-extra-sm {
     height: 70px;
   }
 
-  &.weather-extra.bg-extra4 {
+  &.weather-extra-lg {
     height: 105px;
   }
-}
-
-.mb-8 {
-  margin-bottom: 8px;
 }
 
 /* Animation effects */
@@ -61,7 +59,7 @@
 
 .skeleton-container {
   margin: 0 10px 0 10px;
-  background-color: #ddd;
+  background-color: $skeleton-gray;
   border-radius: 4px;
   animation: pulse 1s ease-in-out infinite;
 }

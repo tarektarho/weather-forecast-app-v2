@@ -1,5 +1,5 @@
 import React from "react"
-import "./Dashboard.scss"
+import styles from "./styles.module.scss"
 import { LOCAL_STORAGE_KEY_WELCOME_MODAL } from "../../utils/constants"
 import { useWeather } from "../../providers/weatherContext"
 import CurrentWidget from "../widgets/CurrentWidget/CurrentWidget"
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="main-container" data-testid="main-container">
+    <div className={styles.mainContainer} data-testid="main-container">
       {/* React 19: Document metadata for SEO - automatically hoisted to <head> */}
       <title>
         {locationName
@@ -86,17 +86,17 @@ const Dashboard: React.FC = () => {
             : "Get real-time weather forecasts, air pollution data, and 5-day weather forecasts for any location."
         }
       />
-      <div className="main-wrapper">
-        <div className="main-content">
-          <div className="main-title">
+      <div className={styles.mainWrapper}>
+        <div className={styles.mainContent}>
+          <div className={styles.mainTitle}>
             <Search />
-            <div className="title">
+            <div className={styles.title}>
               <h1>WeatherApp</h1>
             </div>
           </div>
           {/* Forecast 5 days */}
           <DailyWidget />
-          <div className="flex-wrapper">
+          <div className={styles.flexWrapper}>
             {/* More data from OpenWeather */}
             <div className="flex-item widget">
               <AdditionalWidget />
@@ -108,7 +108,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
         {/* Current weather detail */}
-        <div className="detail-content">
+        <div className={styles.detailContent}>
           <CurrentWidget />
         </div>
       </div>

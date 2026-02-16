@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react"
 import { useWeather } from "../../providers/weatherContext"
-import "./Search.scss"
+import styles from "./styles.module.scss"
 
 const Search: React.FC = () => {
   const { city, setCity, searchByCity } = useWeather()
@@ -28,8 +28,9 @@ const Search: React.FC = () => {
   }, [handleKeyboard])
 
   return (
-    <div className="search">
+    <div className={styles.search}>
       <input
+        className={styles.searchInput}
         data-testid="input-search-by-city"
         type="text"
         name="city"
@@ -37,7 +38,12 @@ const Search: React.FC = () => {
         value={city}
         onChange={(e) => setCity(e.target.value)}
       />
-      <button type="button" data-testid="btn-search" onClick={handleSearch}>
+      <button
+        className={styles.searchButton}
+        type="button"
+        data-testid="btn-search"
+        onClick={handleSearch}
+      >
         Search
       </button>
     </div>

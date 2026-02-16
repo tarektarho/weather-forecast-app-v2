@@ -1,7 +1,7 @@
 import React from "react"
 import MapImg from "../../assets/images/map.jpeg"
 import packageJson from "../../../package.json"
-import "./Modal.scss"
+import styles from "./styles.module.scss"
 
 // Define the interface for the props received by the Modal component.
 interface ModalProps {
@@ -20,30 +20,36 @@ const Modal: React.FC<ModalProps> = ({ hideModal }) => {
   ]
 
   return (
-    <div className="modal-container" data-testid="modal-container">
-      <div className="modal-wrapper">
-        <div className="modal-header">
+    <div className={styles.modalContainer} data-testid="modal-container">
+      <div className={styles.modalWrapper}>
+        <div className={styles.modalHeader}>
           <h2>WeatherForecastApp</h2>
           <p>Version {packageJson.version}</p>
         </div>
 
-        <div className="modal-content">
-          <div className="modal-body">
-            <h3>App Features</h3>
-            <ul>
+        <div className={styles.modalContent}>
+          <div className={styles.modalBody}>
+            <h3 className={styles.modalBodyTitle}>App Features</h3>
+            <ul className={styles.modalFeaturesList}>
               {/* Map over the appFeatures array and display each feature as a list item. */}
               {appFeatures.map((feature, index) => (
-                <li key={index}>{feature}</li>
+                <li className={styles.modalFeaturesItem} key={index}>
+                  {feature}
+                </li>
               ))}
             </ul>
           </div>
           {/* Display an image of a map using the imported MapImg. */}
-          <img src={MapImg} alt="map" />
+          <img className={styles.modalImage} src={MapImg} alt="map" />
         </div>
 
-        <div className="modal-button">
+        <div className={styles.modalButton}>
           {/* Attach the hideModal function to the "Continue" button to close the modal. */}
-          <button onClick={hideModal} data-testid="hide-modal-btn">
+          <button
+            className={styles.modalContinueBtn}
+            onClick={hideModal}
+            data-testid="hide-modal-btn"
+          >
             Continue
           </button>
         </div>
