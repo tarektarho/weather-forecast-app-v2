@@ -2,7 +2,7 @@ import React from "react"
 import { useWeather } from "../../../providers/weatherContext"
 import AirPollutionWidgetSkeleton from "../../common/skeletons/AirPollutionWidgetSkeleton"
 import type AirPollutionData from "../../../types/airPollution"
-import "./AirPollutionWidget.scss"
+import styles from "./styles.module.scss"
 
 // https://openweathermap.org/api/air-pollution
 // Air pollution quality descriptions
@@ -63,19 +63,21 @@ const AirPollutionWidget: React.FC = () => {
 
   return (
     <>
-      <div className="air-title">
+      <div className={styles.airTitle}>
         <h4 data-testid="airpollution-widget-title">
           Your Current Air Pollution
         </h4>
-        <h3>{airPollutionQuality[quality]}</h3>
+        <h3 className={styles.airQuality}>{airPollutionQuality[quality]}</h3>
       </div>
       <div className="flex-wrap">
         {pollutionComponents &&
           pollutionComponents.map((component, index) => (
-            <div className="air-data" key={index}>
-              <span>{index + 1}</span>
-              <h4>{component.label}</h4>
-              <p data-testid="airpollution-co">{component.value}</p>
+            <div className={styles.airData} key={index}>
+              <span className={styles.airDataIndex}>{index + 1}</span>
+              <h4 className={styles.airDataLabel}>{component.label}</h4>
+              <p className={styles.airDataValue} data-testid="airpollution-co">
+                {component.value}
+              </p>
             </div>
           ))}
       </div>

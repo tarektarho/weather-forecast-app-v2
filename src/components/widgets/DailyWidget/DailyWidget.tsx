@@ -4,7 +4,7 @@ import DailyDetail from "../DailyDetail/DailyDetail"
 import type { ForecastItem } from "../../../types/forecast"
 import type ForecastData from "../../../types/forecast"
 import DailyWidgetSkeleton from "../../common/skeletons/DailyWidgetSkeleton"
-import "./DailyWidget.scss"
+import styles from "./styles.module.scss"
 
 const DailyWidget: React.FC = () => {
   // Retrieve forecast data from the weather context
@@ -41,8 +41,8 @@ const DailyWidget: React.FC = () => {
       <h3 className="widget-title" data-testid="daily-widget-title">
         Forecast next 5 days
       </h3>
-      <div className="daily-container">
-        <div className="daily-wrapper">
+      <div className={styles.dailyContainer}>
+        <div className={styles.dailyWrapper}>
           {forecastList &&
             forecastList.map((item: ForecastItem) => (
               <DailyDetail key={item.dt} data={item} />

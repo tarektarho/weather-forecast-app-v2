@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import ErrorBoundary from "./ErrorBoundary"
+import styles from "./styles.module.scss"
 
 // Component that throws an error for testing
 const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
@@ -140,7 +141,7 @@ describe("ErrorBoundary", () => {
     const container = screen
       .getByText("Oops! Something went wrong")
       .closest("div")
-    expect(container).toHaveStyle({ textAlign: "center" })
+    expect(container).toHaveClass(styles.content)
   })
 
   it("has accessible button for reloading", () => {

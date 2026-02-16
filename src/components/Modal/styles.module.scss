@@ -43,16 +43,16 @@
   color: black;
   padding-right: 40px;
 
-  h3 {
+  .modal-body-title {
     margin-bottom: 12px;
     color: $medium-blue;
   }
 
-  ul {
+  .modal-features-list {
     list-style: none;
     padding: 0;
 
-    li {
+    .modal-features-item {
       margin-bottom: 6px;
 
       &:last-child {
@@ -62,7 +62,7 @@
   }
 }
 
-.modal-content img {
+.modal-image {
   width: 300px;
   box-shadow: 0px 2px 7px -2px rgba(37, 38, 49, 0.31);
   border-radius: 8px;
@@ -76,7 +76,7 @@
   max-width: 680px;
   padding: 24px 0;
 
-  button {
+  .modal-continue-btn {
     font-weight: 700;
     font-size: 16px;
     border-radius: 6px;

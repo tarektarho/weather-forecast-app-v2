@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, it, expect, vi } from "vitest"
 import Notification from "./Notification"
+import styles from "./styles.module.scss"
 
 // Stub image imports
 vi.mock("../../assets/images/error.png", () => ({ default: "error.png" }))
@@ -19,7 +20,7 @@ describe("Notification", () => {
     const icon = screen.getByTestId("error-icon")
 
     expect(div).toBeVisible()
-    expect(div).toHaveClass("error")
+    expect(div).toHaveClass(styles.error)
     expect(div.textContent?.trim()).toContain("city not found")
     expect(icon).toBeVisible()
   })
@@ -36,7 +37,7 @@ describe("Notification", () => {
     const div = screen.getByTestId("notification")
 
     expect(div).toBeVisible()
-    expect(div).toHaveClass("info")
+    expect(div).toHaveClass(styles.info)
     expect(div.textContent?.trim()).toContain("URL was copied to clipboard")
     expect(screen.queryByTestId("error-icon")).toBeNull()
   })
@@ -53,7 +54,7 @@ describe("Notification", () => {
     const div = screen.getByTestId("notification")
 
     expect(div).toBeVisible()
-    expect(div).toHaveClass("success")
+    expect(div).toHaveClass(styles.notification)
     expect(div.textContent?.trim()).toContain("Operation completed")
     expect(screen.queryByTestId("error-icon")).toBeNull()
   })
@@ -93,7 +94,7 @@ describe("Notification", () => {
     )
     const div = screen.getByTestId("notification")
     expect(div).toBeVisible()
-    expect(div).toHaveClass("info")
+    expect(div).toHaveClass(styles.info)
     expect(screen.queryByTestId("error-icon")).toBeNull()
   })
 })

@@ -1,25 +1,22 @@
 import { render, screen } from "@testing-library/react"
 import SkeletonElement from "../SkeletonElement"
+import styles from "../styles.module.scss"
 
 describe("SkeletonElement", () => {
-  it("renders a skeleton element with the specified type and role", () => {
-    render(<SkeletonElement type="input" role="text" />)
+  it("renders a skeleton element with className and role", () => {
+    render(<SkeletonElement className={styles.input} role="text" />)
 
-    // Verify that the skeleton element is rendered with the correct class and role
     const skeletonElement = screen.getByTestId("skeleton-test-id")
-    expect(skeletonElement).toHaveClass("skeleton input")
+    expect(skeletonElement).toHaveClass(styles.skeleton)
+    expect(skeletonElement).toHaveClass(styles.input)
     expect(skeletonElement).toHaveAttribute("role", "text")
-    // Check if the class "skeleton" exists in the element's classes
-    expect(skeletonElement).toHaveClass("skeleton")
   })
 
-  it("renders a skeleton element with the default role if not provided", () => {
-    render(<SkeletonElement type="button" role="button" />)
+  it("renders a skeleton element with only the base class when no className is provided", () => {
+    render(<SkeletonElement />)
 
-    // Verify that the skeleton element is rendered with the correct class and default role
     const skeletonElement = screen.getByTestId("skeleton-test-id")
-    expect(skeletonElement).toHaveClass("skeleton button")
-    expect(skeletonElement).toHaveAttribute("role", "button")
-    expect(skeletonElement).toHaveClass("skeleton")
+    expect(skeletonElement).toHaveClass(styles.skeleton)
+    expect(skeletonElement).not.toHaveAttribute("role")
   })
 })

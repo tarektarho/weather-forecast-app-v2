@@ -7,7 +7,7 @@ import {
   getHour,
   getWeatherIcon,
 } from "../../../utils/index"
-import "./DailyDetail.scss"
+import styles from "./styles.module.scss"
 
 interface DailyDetailProps {
   data: ForecastItem | null
@@ -23,15 +23,21 @@ const DailyDetail: React.FC<DailyDetailProps> = ({ data }) => {
   const { dt, clouds, main, weather } = data
 
   return (
-    <div className="widget daily-item" data-testid="daily-item">
-      <p>
+    <div className={`widget ${styles.dailyItem}`} data-testid="daily-item">
+      <p className={styles.dailyText}>
         {getMonth(dt)} {getDay(dt)}
       </p>
-      <p>{getHour(dt)}</p>
-      <img className="icon" src={getWeatherIcon(weather[0].icon)} alt="" />
-      <h3>{convertKelvinToCelsius(main.temp)}º</h3>
-      <p>Clouds | {clouds.all}%</p>
-      <p data-testid="daily-description">{weather[0].description}</p>
+      <p className={styles.dailyText}>{getHour(dt)}</p>
+      <img
+        className={styles.icon}
+        src={getWeatherIcon(weather[0].icon)}
+        alt={`Weather icon for ${weather[0].description}`}
+      />
+      <h3 className={styles.dailyTemp}>{convertKelvinToCelsius(main.temp)}º</h3>
+      <p className={styles.dailyText}>Clouds | {clouds.all}%</p>
+      <p className={styles.dailyText} data-testid="daily-description">
+        {weather[0].description}
+      </p>
     </div>
   )
 }

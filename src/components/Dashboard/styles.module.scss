@@ -1,4 +1,4 @@
-@use "../../styles/_variables.scss" as *;
+@use "../../styles/variables" as *;
 
 .main-container {
   color: $blue;
@@ -9,18 +9,6 @@
   padding-bottom: 12px;
   padding-left: 16px;
   color: orange;
-
-  h2 {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 4px;
-  }
-
-  p {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
 }
 
 .main-wrapper {
@@ -44,19 +32,7 @@
   background-color: $light-gray;
 }
 
-.widget {
-  border-radius: 6px;
-  box-shadow: $box-shadow;
-  margin-bottom: 12px;
-  padding: 16px;
-  width: 100%;
-  height: auto;
-}
 
-.widget-title {
-  margin-bottom: 12px;
-  margin-left: 16px;
-}
 
 /* TABLET */
 @media (min-width: 768px) {
@@ -64,20 +40,6 @@
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .title {
-    color: orange;
-  }
-
-  .title h2 {
-    font-size: 18px;
-    margin-bottom: 6px;
-  }
-
-  .title p {
-    font-size: 16px;
-    margin-bottom: 0;
   }
 
   .main-content {
@@ -96,11 +58,6 @@
 
   .flex-wrapper {
     align-items: flex-start;
-  }
-
-  .widget {
-    margin-right: 16px;
-    margin-bottom: 16px;
   }
 }
 

@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard"
 import type { WeatherContextValue } from "../../providers/weatherContext"
 import * as UtilsModule from "../../utils"
 import type WeatherData from "../../types/weather"
+import notificationStyles from "../Notification/styles.module.scss"
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -269,7 +270,7 @@ describe("Dashboard – Error notification", () => {
 
     const notification = screen.getByTestId("notification")
     expect(notification).toBeVisible()
-    expect(notification).toHaveClass("error")
+    expect(notification).toHaveClass(notificationStyles.error)
     expect(notification.textContent).toContain("city not found")
   })
 
@@ -319,7 +320,7 @@ describe("Dashboard – Info notification", () => {
 
     const notification = screen.getByTestId("notification")
     expect(notification).toBeVisible()
-    expect(notification).toHaveClass("info")
+    expect(notification).toHaveClass(notificationStyles.info)
     expect(notification.textContent).toContain("URL was copied to clipboard")
   })
 

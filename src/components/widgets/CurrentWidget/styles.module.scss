@@ -11,7 +11,7 @@
 
 .weather-detail {
   color: $blue;
-  background: $light-blue;
+  background-color: $light-blue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,19 +19,23 @@
   position: relative;
   padding: 36px 12px 12px;
 
+  &[data-skeleton] {
+    background-color: $skeleton-gray;
+  }
+
   .icon {
     display: block;
     width: 90px;
     margin: 0 auto;
   }
 
-  h3 {
+  .weather-temp {
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 8px;
   }
 
-  p {
+  .weather-text {
     font-size: 14px;
     margin-bottom: 8px;
     color: $dark;
@@ -47,7 +51,7 @@
     justify-content: flex-end;
     align-items: center;
 
-    button {
+    .widget-action-btn {
       font-weight: 700;
       font-size: 12px;
       border-radius: 6px;
@@ -66,54 +70,11 @@
   }
 }
 
-.weather-extra {
-  justify-content: center;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  img {
-    width: 42px;
-    margin: 0 auto 12px;
-  }
-
-  span {
-    display: inline-block;
-    width: 80px;
-    font-weight: 600;
-    font-size: 14px;
-  }
-}
-
-.bg-extra1 {
-  background-color: $light-orange;
-}
-
-.bg-extra2 {
-  background-color: $light-green;
-}
-
-.bg-extra3 {
-  background-color: $medium-blue;
-  color: $white;
-}
-
-.bg-extra4 {
-  background-color: $light-red;
-}
-
 /* TABLET */
 @media (min-width: 768px) {
-
-  .weather-detail,
-  .weather-extra-wrapper,
-  .flex-item {
+  .weather-detail {
     flex: 1 1 0px;
     align-self: stretch;
-  }
-
-  .weather-detail {
     margin-right: 16px;
 
     .icon {
@@ -121,7 +82,7 @@
     }
   }
 
-  .weather-extra:nth-child(3) {
+  :global(.weather-extra:nth-child(3)) {
     margin-bottom: 0;
   }
 }
@@ -131,12 +92,11 @@
   .weather-detail {
     margin-right: 0;
 
-    h3 {
+    .weather-temp {
       font-size: 48px;
     }
 
-    .icon,
-    .daily-item .icon {
+    .icon {
       width: 140px;
     }
   }
