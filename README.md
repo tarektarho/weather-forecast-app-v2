@@ -45,14 +45,14 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
 
 | Command              | Description                         |
 | -------------------- | ----------------------------------- |
-| `npm run dev`        | Start development server            |
-| `npm run build`      | Type-check and build for production |
-| `npm run preview`    | Preview production build locally    |
-| `npm run test`       | Run tests in watch mode             |
-| `npm run coverage`   | Run tests with coverage report      |
-| `npm run lint`       | Lint source files with ESLint       |
-| `npm run format`     | Format code with Prettier           |
-| `npm run type-check` | Run TypeScript type checking        |
+| `pnpm dev`        | Start development server            |
+| `pnpm build`      | Type-check and build for production |
+| `pnpm preview`    | Preview production build locally    |
+| `pnpm test`       | Run tests in watch mode             |
+| `pnpm coverage`   | Run tests with coverage report      |
+| `pnpm lint`       | Lint source files with ESLint       |
+| `pnpm format`     | Format code with Prettier           |
+| `pnpm type-check` | Run TypeScript type checking        |
 
 ## Project Setup
 
@@ -66,7 +66,7 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
 
    ```sh
    cd weather-forecast-app-v2
-   npm install
+   pnpm install
    ```
 
 3. Get your API key and configure the environment:
@@ -86,13 +86,13 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
 4. Start the dev server:
 
    ```sh
-   npm run dev
+   pnpm dev
    ```
 
 5. Run tests:
 
    ```sh
-   npm run test
+   pnpm test
    ```
 
 > **Note:** If the API key is expired or missing, generate a new one at [OpenWeather Sign Up](https://home.openweathermap.org/users/sign_up) and set `VITE_WEATHER_API_KEY` in your environment.

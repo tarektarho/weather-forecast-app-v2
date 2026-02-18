@@ -4,7 +4,7 @@
   "private": false,
   "version": "2.0.3",
   "type": "module",
-  "packageManager": "npm@11.8.0",
+  "packageManager": "pnpm@10.6.2",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -52,5 +52,11 @@
     "vitest": "^4.0.18",
     "vitest-fetch-mock": "^0.4.5"
   },
-  "prettier": "prettier-config-nick"
+  "prettier": "prettier-config-nick",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild"
+    ]
+  }
 }

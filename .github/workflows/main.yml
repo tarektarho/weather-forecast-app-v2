@@ -22,24 +22,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Type check
-        run: npm run type-check
+        run: pnpm type-check
 
       - name: Build
-        run: npm run build
+        run: pnpm build
         env:
           VITE_WEATHER_API_KEY: ${{ secrets.VITE_WEATHER_API_KEY }}
 
       - name: Run tests and calculate coverage
-        run: npm run test -- --coverage
+        run: pnpm test -- --coverage
 
       - name: Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
