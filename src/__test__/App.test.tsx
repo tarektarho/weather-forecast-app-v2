@@ -16,8 +16,7 @@ vi.mock("../routes/AppRoutes", () => ({
 
 // Replace BrowserRouter with a simple wrapper so tests run in jsdom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>("react-router-dom")
+  const actual = await vi.importActual("react-router-dom")
   return {
     ...actual,
     BrowserRouter: ({ children }: { children: React.ReactNode }) => (

@@ -41,7 +41,7 @@ jobs:
           VITE_WEATHER_API_KEY: ${{ secrets.VITE_WEATHER_API_KEY }}
 
       - name: Run tests and calculate coverage
-        run: pnpm test -- --coverage
+        run: pnpm coverage
 
       - name: Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
