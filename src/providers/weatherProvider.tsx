@@ -33,13 +33,18 @@ function resolveInitialCoords(): { lat?: number; lon?: number } {
   const urlLat = Utils.getURLParam(Constants.URL_PARAM_LAT)
   const urlLon = Utils.getURLParam(Constants.URL_PARAM_LON)
   if (urlLat && urlLon) {
-    return { lat: Number(urlLat), lon: Number(urlLon) }
+    const lat = Number(urlLat)
+    const lon = Number(urlLon)
+    if (Utils.isValidCoordinates(lat, lon)) {
+      return { lat, lon }
+    }
+    // Invalid URL params — fall through to localStorage / geolocation
   }
 
   const stored = Utils.getLocalStorageItem(
     Constants.LOCAL_STORAGE_KEY_GPS_POSITION,
   ) as GpsPosition | null
-  if (stored) {
+  if (stored && Utils.isValidCoordinates(stored.lat, stored.lon)) {
     return { lat: stored.lat, lon: stored.lon }
   }
 
@@ -64,7 +69,10 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   }>(() => resolveInitialCoords())
 
   // RTK Query hooks – skip when args aren't ready
-  const hasCoords = coords.lat !== undefined && coords.lon !== undefined
+  const hasCoords =
+    coords.lat !== undefined &&
+    coords.lon !== undefined &&
+    Utils.isValidCoordinates(coords.lat, coords.lon)
   const hasCity = searchCity !== ""
 
   const latLon = { lat: coords.lat ?? 0, lon: coords.lon ?? 0 }
@@ -144,9 +152,11 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
     }
   }
 
-  // Copy and share URL
+  // Copy and share URL — use coordinates from the active weather response
+  // so that a city search shares the searched city, not the user's GPS location.
   const copyShareUrl = () => {
-    Utils.placeLinkIntoClipBoard()
+    const activeCoord = weatherData?.data?.coord
+    Utils.placeLinkIntoClipBoard(activeCoord?.lat, activeCoord?.lon)
       .then(() => {
         setInfo(Constants.MESSAGE_URL_COPIED)
       })

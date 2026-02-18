@@ -136,12 +136,94 @@ describe("Utils", () => {
         expect.stringContaining("lon=5"),
       )
     })
+
+    it("uses explicit lat/lon params instead of localStorage", async () => {
+      Utils.setLocalStorageItem("gps_position", { lat: 10, lon: 20 })
+      const writeTextMock = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, {
+        clipboard: { writeText: writeTextMock },
+      })
+
+      await Utils.placeLinkIntoClipBoard(51.5, -0.12)
+
+      expect(writeTextMock).toHaveBeenCalledWith(
+        expect.stringContaining("lat=51.5"),
+      )
+      expect(writeTextMock).toHaveBeenCalledWith(
+        expect.stringContaining("lon=-0.12"),
+      )
+    })
+
+    it("falls back to localStorage when only lat is provided", async () => {
+      Utils.setLocalStorageItem("gps_position", { lat: 48, lon: 2 })
+      const writeTextMock = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, {
+        clipboard: { writeText: writeTextMock },
+      })
+
+      await Utils.placeLinkIntoClipBoard(51.5, undefined)
+
+      expect(writeTextMock).toHaveBeenCalledWith(
+        expect.stringContaining("lat=48"),
+      )
+      expect(writeTextMock).toHaveBeenCalledWith(
+        expect.stringContaining("lon=2"),
+      )
+    })
+
+    it("builds URL from origin + pathname without duplicating query params", async () => {
+      Utils.setLocalStorageItem("gps_position", { lat: 52, lon: 5 })
+      const writeTextMock = vi.fn().mockResolvedValue(undefined)
+      Object.assign(navigator, {
+        clipboard: { writeText: writeTextMock },
+      })
+
+      await Utils.placeLinkIntoClipBoard(52, 5)
+
+      const copiedUrl = writeTextMock.mock.calls[0][0] as string
+      // URL should contain exactly one '?'
+      const questionMarkCount = (copiedUrl.match(/\?/g) || []).length
+      expect(questionMarkCount).toBe(1)
+    })
   })
 
   describe("getURLParam", () => {
     it("returns null when param does not exist", () => {
       const result = Utils.getURLParam("nonexistent")
       expect(result).toBeNull()
+    })
+  })
+
+  describe("isValidCoordinates", () => {
+    it("returns true for valid coordinates", () => {
+      expect(Utils.isValidCoordinates(52.37, 4.89)).toBe(true)
+    })
+
+    it("returns true for boundary values", () => {
+      expect(Utils.isValidCoordinates(90, 180)).toBe(true)
+      expect(Utils.isValidCoordinates(-90, -180)).toBe(true)
+      expect(Utils.isValidCoordinates(0, 0)).toBe(true)
+    })
+
+    it("returns false for out-of-range latitude", () => {
+      expect(Utils.isValidCoordinates(91, 0)).toBe(false)
+      expect(Utils.isValidCoordinates(-91, 0)).toBe(false)
+    })
+
+    it("returns false for out-of-range longitude", () => {
+      expect(Utils.isValidCoordinates(0, 181)).toBe(false)
+      expect(Utils.isValidCoordinates(0, -181)).toBe(false)
+    })
+
+    it("returns false for NaN values", () => {
+      expect(Utils.isValidCoordinates(NaN, 5)).toBe(false)
+      expect(Utils.isValidCoordinates(52, NaN)).toBe(false)
+      expect(Utils.isValidCoordinates(NaN, NaN)).toBe(false)
+    })
+
+    it("returns false for Infinity values", () => {
+      expect(Utils.isValidCoordinates(Infinity, 5)).toBe(false)
+      expect(Utils.isValidCoordinates(52, -Infinity)).toBe(false)
     })
   })
 
