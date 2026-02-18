@@ -15,7 +15,13 @@ export const setLocalStorageItem = (name: string, value: unknown): void => {
 export const getLocalStorageItem = (name: string): unknown => {
   const data = localStorage.getItem(name)
   if (data) {
-    return JSON.parse(data)
+    try {
+      return JSON.parse(data)
+    } catch {
+      // Corrupted or non-JSON value — remove it and fall through
+      localStorage.removeItem(name)
+      return null
+    }
   }
   return null
 }
