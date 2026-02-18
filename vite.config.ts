@@ -4,6 +4,9 @@ import react from "@vitejs/plugin-react"
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/weather-forecast-app-v2/",
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? "2.0.0"),
+  },
   css: {
     modules: {
       localsConvention: "camelCase",
