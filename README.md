@@ -69,13 +69,27 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
    npm install
    ```
 
-3. Start the dev server:
+3. Get your API key and configure the environment:
+   - Sign up at [OpenWeather](https://home.openweathermap.org/users/sign_up) to get a free API key
+   - Copy the example env file and add your key:
+
+     ```sh
+     cp .env.example .env
+     ```
+
+   - Open `.env` and replace `your_api_key_here` with your actual API key:
+
+     ```
+     VITE_WEATHER_API_KEY=your_api_key_here
+     ```
+
+4. Start the dev server:
 
    ```sh
    npm run dev
    ```
 
-4. Run tests:
+5. Run tests:
 
    ```sh
    npm run test
