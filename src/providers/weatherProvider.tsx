@@ -67,18 +67,17 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const hasCoords = coords.lat !== undefined && coords.lon !== undefined
   const hasCity = searchCity !== ""
 
-  const weatherByLatLon = useGetWeatherByLatLonQuery(
-    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
-    { skip: !hasCoords || hasCity },
-  )
-  const forecastByLatLon = useGetForecastByLatLonQuery(
-    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
-    { skip: !hasCoords || hasCity },
-  )
-  const airPollutionByLatLon = useGetAirPollutionByLatLonQuery(
-    hasCoords ? { lat: coords.lat!, lon: coords.lon! } : { lat: 0, lon: 0 },
-    { skip: !hasCoords || hasCity },
-  )
+  const latLon = { lat: coords.lat ?? 0, lon: coords.lon ?? 0 }
+
+  const weatherByLatLon = useGetWeatherByLatLonQuery(latLon, {
+    skip: !hasCoords || hasCity,
+  })
+  const forecastByLatLon = useGetForecastByLatLonQuery(latLon, {
+    skip: !hasCoords || hasCity,
+  })
+  const airPollutionByLatLon = useGetAirPollutionByLatLonQuery(latLon, {
+    skip: !hasCoords || hasCity,
+  })
 
   const weatherByCity = useGetWeatherByCityQuery(
     { city: searchCity },
