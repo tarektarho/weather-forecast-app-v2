@@ -2,6 +2,7 @@ import type { FC, ReactElement } from "react"
 import type { ForecastItem } from "../../../types/forecast"
 import { convertKelvinToCelsius } from "../../../utils/temperature"
 import { getDay, getMonth, getHour, getWeatherIcon } from "../../../utils/date"
+import shared from "../../../styles/shared.module.scss"
 import styles from "./styles.module.scss"
 
 interface DailyDetailProps {
@@ -44,7 +45,10 @@ const DailyDetail: FC<DailyDetailProps> = ({
   const { dt, clouds, main, weather } = data
 
   return (
-    <div className={`widget ${styles.dailyItem}`} data-testid="daily-item">
+    <div
+      className={`${shared.widget} ${styles.dailyItem}`}
+      data-testid="daily-item"
+    >
       <p className={styles.dailyText}>
         {getMonth(dt)} {getDay(dt)}
       </p>

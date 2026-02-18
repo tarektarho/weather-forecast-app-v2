@@ -1,6 +1,7 @@
 import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
 import currentWidgetStyles from "../../widgets/CurrentWidget/styles.module.scss"
+import shared from "../../../styles/shared.module.scss"
 import skeletonStyles from "./styles.module.scss"
 
 /**
@@ -14,18 +15,18 @@ const CurrentWidgetSkeleton: FC = () => {
   return (
     <>
       <SkeletonElement
-        className={`widget ${currentWidgetStyles.weatherDetail}`}
+        className={`${shared.widget} ${currentWidgetStyles.weatherDetail}`}
         role="current-widget-skeleton"
       />
-      <div className="weather-extra-wrapper">
+      <div className={shared.weatherExtraWrapper}>
         <SkeletonElement
-          className={`widget ${skeletonStyles.weatherExtraSm}`}
+          className={`${shared.widget} ${skeletonStyles.weatherExtraSm}`}
         />
         <SkeletonElement
-          className={`widget ${skeletonStyles.weatherExtraSm}`}
+          className={`${shared.widget} ${skeletonStyles.weatherExtraSm}`}
         />
         <SkeletonElement
-          className={`widget ${skeletonStyles.weatherExtraSm}`}
+          className={`${shared.widget} ${skeletonStyles.weatherExtraSm}`}
         />
       </div>
     </>

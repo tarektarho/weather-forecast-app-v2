@@ -4,6 +4,7 @@ import DailyDetail from "../DailyDetail/DailyDetail"
 import type { ForecastItem } from "../../../types/forecast"
 import type ForecastData from "../../../types/forecast"
 import DailyWidgetSkeleton from "../../common/skeletons/DailyWidgetSkeleton"
+import shared from "../../../styles/shared.module.scss"
 import styles from "./styles.module.scss"
 
 /**
@@ -62,7 +63,7 @@ const DailyWidget: FC = (): JSX.Element => {
   // Render the forecast data if available
   return (
     <>
-      <h3 className="widget-title" data-testid="daily-widget-title">
+      <h3 className={shared.widgetTitle} data-testid="daily-widget-title">
         Forecast next 5 days
       </h3>
       <div className={styles.dailyContainer}>

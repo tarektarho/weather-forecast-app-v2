@@ -6,6 +6,7 @@ import CurrentWidget from "../../components/widgets/CurrentWidget/CurrentWidget"
 import DailyWidget from "../../components/widgets/DailyWidget/DailyWidget"
 import AdditionalWidget from "../../components/widgets/AdditionalWidget/AdditionalWidget"
 import AirPollutionWidget from "../../components/widgets/AirPollutionWidget/AirPollutionWidget"
+import WidgetContainer from "../../components/common/WidgetContainer/WidgetContainer"
 import Notification from "../../components/Notification/Notification"
 import Search from "../../components/Search/Search"
 import Modal from "../../components/Modal/Modal"
@@ -107,13 +108,13 @@ const Dashboard: FC = () => {
           <DailyWidget />
           <div className={styles.flexWrapper}>
             {/* More data from OpenWeather */}
-            <div className="flex-item widget">
+            <WidgetContainer flexItem>
               <AdditionalWidget />
-            </div>
+            </WidgetContainer>
             {/* AirPollution */}
-            <div className="flex-item widget">
+            <WidgetContainer flexItem>
               <AirPollutionWidget />
-            </div>
+            </WidgetContainer>
           </div>
         </div>
         {/* Current weather detail */}
