@@ -1,4 +1,5 @@
 import type { FC, ReactElement } from "react"
+import { Link } from "react-router-dom"
 import type { ForecastItem } from "../../../types/forecast"
 import { convertKelvinToCelsius } from "../../../utils/temperature"
 import { getDay, getMonth, getHour, getWeatherIcon } from "../../../utils/date"
@@ -45,7 +46,8 @@ const DailyDetail: FC<DailyDetailProps> = ({
   const { dt, clouds, main, weather } = data
 
   return (
-    <div
+    <Link
+      to={`/forecast/${dt}`}
       className={`${shared.widget} ${styles.dailyItem}`}
       data-testid="daily-item"
     >
@@ -66,7 +68,7 @@ const DailyDetail: FC<DailyDetailProps> = ({
       <p className={styles.dailyText} data-testid="daily-description">
         {weather[0].description}
       </p>
-    </div>
+    </Link>
   )
 }
 

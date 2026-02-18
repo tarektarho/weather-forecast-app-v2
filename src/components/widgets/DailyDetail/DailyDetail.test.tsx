@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react"
+import { MemoryRouter } from "react-router-dom"
 import DailyDetail from "./DailyDetail"
 import type { ForecastItem } from "../../../types/forecast"
 
@@ -28,10 +29,15 @@ describe("DailyDetail", () => {
   }
 
   it("renders with data", () => {
-    render(<DailyDetail data={dataMock} />)
+    render(
+      <MemoryRouter>
+        <DailyDetail data={dataMock} />
+      </MemoryRouter>,
+    )
 
-    const div = screen.getByTestId("daily-item")
-    expect(div).toBeVisible()
+    const link = screen.getByTestId("daily-item")
+    expect(link).toBeVisible()
+    expect(link).toHaveAttribute("href", "/forecast/1666048008")
 
     const pDescription = screen.getByTestId("daily-description")
     expect(pDescription).toBeVisible()
@@ -39,7 +45,11 @@ describe("DailyDetail", () => {
   })
 
   it("renders null if no data is passed to the component in the props", () => {
-    const { container } = render(<DailyDetail data={null} />)
+    const { container } = render(
+      <MemoryRouter>
+        <DailyDetail data={null} />
+      </MemoryRouter>,
+    )
     expect(container.innerHTML).toBe("")
   })
 })

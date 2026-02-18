@@ -1,0 +1,119 @@
+@use "../../styles/variables" as *;
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    min-height: 100vh;
+    background-color: $light-gray;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: $blue;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 15px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.not-found {
+    font-size: 16px;
+    color: $dark;
+    text-align: center;
+    margin-top: 48px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    background: $light-blue;
+    border-radius: 12px;
+    padding: 20px 24px;
+}
+
+.date {
+    font-size: 22px;
+    color: $dark;
+    margin-bottom: 4px;
+}
+
+.description {
+    font-size: 16px;
+    color: $dark;
+    text-transform: capitalize;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.card {
+    background: $white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: $box-shadow;
+
+    h2 {
+        font-size: 16px;
+        color: $blue;
+        margin-bottom: 12px;
+    }
+}
+
+.value {
+    font-size: 32px;
+    font-weight: 800;
+    color: $dark;
+    margin-bottom: 12px;
+}
+
+.details {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        padding: 6px 0;
+        font-size: 14px;
+        color: $dark;
+        border-bottom: 1px solid $gray;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        strong {
+            float: right;
+            color: $blue;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .header {
+        padding: 24px 32px;
+    }
+
+    .date {
+        font-size: 26px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
