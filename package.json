@@ -2,7 +2,7 @@
   "name": "weather-forecast-app-v2",
   "author": "Tarek Tarho",
   "private": false,
-  "version": "2.0.3",
+  "version": "2.0.4",
   "type": "module",
   "packageManager": "pnpm@10.6.2",
   "scripts": {
