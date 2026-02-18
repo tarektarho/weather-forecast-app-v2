@@ -7,6 +7,15 @@ import AdditionalWidgetSkeleton from "../../common/skeletons/AdditionalWidgetSke
 import type WeatherData from "../../../types/weather"
 import styles from "./styles.module.scss"
 
+/**
+ * Displays additional weather data such as sunrise and sunset times.
+ *
+ * Consumes weather data from {@link useWeather} context and renders the
+ * sunrise/sunset times adjusted to the queried city's timezone.
+ * Shows a skeleton loader while data is loading or unavailable.
+ *
+ * @component
+ */
 const AdditionalWidget: FC = () => {
   const { weatherData } = useWeather()
 
@@ -36,6 +45,7 @@ const AdditionalWidget: FC = () => {
 
   // Extract sunrise and sunset times from weather data
   const { sunrise, sunset } = weatherData.data.sys
+  const { timezone } = weatherData.data
 
   return (
     <div className={`weather-extra-wrapper ${styles.myOtherStep}`}>
@@ -51,7 +61,7 @@ const AdditionalWidget: FC = () => {
             loading="lazy"
           />
           {/* Display the sunrise time */}
-          <h4 data-testid="sunrise">{getHour(sunrise)}</h4>
+          <h4 data-testid="sunrise">{getHour(sunrise, timezone)}</h4>
         </div>
         {/* Sunset information */}
         <div className="widget weather-extra bg-extra4 mb-0">
@@ -62,7 +72,7 @@ const AdditionalWidget: FC = () => {
             loading="lazy"
           />
           {/* Display the sunset time */}
-          <h4 data-testid="sunset">{getHour(sunset)}</h4>
+          <h4 data-testid="sunset">{getHour(sunset, timezone)}</h4>
         </div>
       </div>
     </div>

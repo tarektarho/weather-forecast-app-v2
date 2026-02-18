@@ -26,11 +26,12 @@ vi.mock("../../../assets/images/night-image.png", () => ({
 }))
 
 // Mock getHour to return a predictable value based on the timestamp
-vi.mock("../../../utils/index", async (importOriginal) => {
+vi.mock("../../../utils/date", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>
   return {
     ...actual,
-    getHour: (ts: number) => (ts === 1700006400 ? "07:00:00" : "16:30:00"),
+    getHour: (ts: number, _tz?: number) =>
+      ts === 1700006400 ? "07:00:00" : "16:30:00",
   }
 })
 

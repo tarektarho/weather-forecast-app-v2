@@ -4,6 +4,14 @@ import DailyDetailSkeleton from "./DailyDetailSkeleton"
 import dailyWidgetStyles from "../../widgets/DailyWidget/styles.module.scss"
 import skeletonStyles from "./styles.module.scss"
 
+/**
+ * Skeleton loader for the {@link DailyWidget} component.
+ *
+ * Renders a title placeholder and multiple {@link DailyDetailSkeleton} items
+ * to match the 5-day forecast widget layout.
+ *
+ * @component
+ */
 const DailyWidgetSkeleton: FC = () => {
   return (
     <>

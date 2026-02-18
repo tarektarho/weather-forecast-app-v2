@@ -3,6 +3,13 @@ import SkeletonElement from "./SkeletonElement"
 import skeletonStyles from "./styles.module.scss"
 import airPollutionStyles from "../../widgets/AirPollutionWidget/styles.module.scss"
 
+/**
+ * Skeleton loader for the {@link AirPollutionWidget} component.
+ *
+ * Renders placeholder shapes matching the air pollution widget layout.
+ *
+ * @component
+ */
 const AirPollutionWidgetSkeleton: FC = () => {
   return (
     <>

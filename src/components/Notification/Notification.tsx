@@ -10,7 +10,18 @@ interface NotificationProps {
   type: "error" | "info" | "success" // Type of notification (error, info, or success).
 }
 
-// The Notification component displays a notification with a message, icon, and close button.
+/**
+ * Displays a dismissible notification banner with an optional icon.
+ *
+ * Supports "error", "info", and "success" notification types.
+ * Error notifications include a dedicated error icon.
+ *
+ * @component
+ * @param props - The component props.
+ * @param props.message - Text content of the notification.
+ * @param props.hideNotification - Callback invoked to dismiss the notification.
+ * @param props.type - Visual style variant: `"error"` | `"info"` | `"success"`.
+ */
 const Notification: FC<NotificationProps> = ({
   message,
   hideNotification,

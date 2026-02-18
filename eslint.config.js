@@ -62,7 +62,10 @@ export default [
     ],
     languageOptions: {
       ...sharedParserOptions,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        __APP_VERSION__: "readonly",
+      },
     },
     plugins: {
       ...sharedPlugins,

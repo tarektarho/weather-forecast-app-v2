@@ -11,6 +11,15 @@ import Search from "../../components/Search/Search"
 import Modal from "../../components/Modal/Modal"
 import { getLocalStorageItem } from "../../browser/storage"
 
+/**
+ * Main dashboard page that composes all weather-related widgets.
+ *
+ * Displays the search bar, current weather, 5-day forecast, sunrise/sunset
+ * information, and air pollution data. Also manages error / info notifications
+ * and a first-visit welcome modal.
+ *
+ * @component
+ */
 const Dashboard: FC = () => {
   // Fetch necessary data and functions from the WeatherContext
   const { modal, hideModal, weatherData, error, hideError, info, setInfo } =

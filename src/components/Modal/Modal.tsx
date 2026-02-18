@@ -7,7 +7,15 @@ interface ModalProps {
   hideModal: () => void // Callback function to hide the modal.
 }
 
-// The Modal component displays information about the WeatherForecastApp and its features.
+/**
+ * Welcome modal that introduces the WeatherForecastApp and lists its features.
+ *
+ * Shown on the user's first visit. Provides a "Continue" button to dismiss it.
+ *
+ * @component
+ * @param props - The component props.
+ * @param props.hideModal - Callback invoked to close the modal.
+ */
 const Modal: FC<ModalProps> = ({ hideModal }) => {
   // List of features provided by the app.
   const appFeatures = [

@@ -3,6 +3,13 @@ import SkeletonElement from "./SkeletonElement"
 import additionalStyles from "../../widgets/AdditionalWidget/styles.module.scss"
 import skeletonStyles from "./styles.module.scss"
 
+/**
+ * Skeleton loader for the {@link AdditionalWidget} component.
+ *
+ * Renders placeholder shapes matching the sunrise/sunset widget layout.
+ *
+ * @component
+ */
 const AdditionalWidgetSkeleton: FC = () => {
   return (
     <div className={`weather-extra-wrapper ${additionalStyles.myOtherStep}`}>

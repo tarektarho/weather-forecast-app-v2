@@ -9,6 +9,15 @@ import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"
 import type WeatherData from "../../../types/weather"
 import styles from "./styles.module.scss"
 
+/**
+ * Displays the current weather conditions for the selected location.
+ *
+ * Shows temperature, weather description, humidity, pressure, and
+ * min/max temperatures. Provides share and reset actions.
+ * Renders a skeleton loader while data is loading or unavailable.
+ *
+ * @component
+ */
 const CurrentWidget: FC = () => {
   // Get weatherData and copyShareUrl from the weather context
   const { weatherData, copyShareUrl } = useWeather()

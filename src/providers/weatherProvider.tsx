@@ -56,6 +56,18 @@ function resolveInitialCoords(): { lat?: number; lon?: number } {
   return {}
 }
 
+/**
+ * Provides weather, forecast, and air-pollution data to the component tree.
+ *
+ * Resolves the user's location from URL params, localStorage, or browser
+ * geolocation, then fetches weather data from the OpenWeatherMap API.
+ * Exposes city search, share URL, modal visibility, and notification state
+ * through {@link WeatherContext}.
+ *
+ * @component
+ * @param props - The component props.
+ * @param props.children - Child components that consume the weather context.
+ */
 export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const dispatch: AppDispatch = useDispatch<AppDispatch>()
 

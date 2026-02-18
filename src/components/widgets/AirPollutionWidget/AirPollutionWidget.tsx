@@ -14,6 +14,16 @@ const AIR_QUALITY_LABELS: Record<number, string> = {
   5: "Very Poor",
 }
 
+/**
+ * Displays air pollution data for the user's current location.
+ *
+ * Shows the Air Quality Index (AQI) label and a breakdown of individual
+ * pollutant concentrations (CO, NH₃, NO, NO₂, O₃, PM2.5, PM10, SO₂).
+ * Renders a skeleton loader while data is loading or unavailable.
+ *
+ * @component
+ * @see {@link https://openweathermap.org/api/air-pollution} OpenWeatherMap Air Pollution API
+ */
 const AirPollutionWidget: FC = () => {
   const { airPollutionData } = useWeather()
 

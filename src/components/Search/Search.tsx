@@ -3,6 +3,14 @@ import { useEffect } from "react"
 import { useWeather } from "../../providers/weatherContext"
 import styles from "./styles.module.scss"
 
+/**
+ * Search input component for looking up weather by city name.
+ *
+ * Provides a text field and search button. Supports pressing Enter to trigger
+ * the search. Consumes {@link useWeather} context for city state and search action.
+ *
+ * @component
+ */
 const Search: FC = () => {
   const { city, setCity, searchByCity } = useWeather()
 
