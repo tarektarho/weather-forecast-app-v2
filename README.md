@@ -43,8 +43,8 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
 
 ## Available Scripts
 
-| Command              | Description                         |
-| -------------------- | ----------------------------------- |
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
 | `pnpm dev`        | Start development server            |
 | `pnpm build`      | Type-check and build for production |
 | `pnpm preview`    | Preview production build locally    |
