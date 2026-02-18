@@ -1,4 +1,4 @@
-import { useEffect, useState, useOptimistic } from "react"
+import { useEffect, useState } from "react"
 import type { FC, ReactNode } from "react"
 import { useDispatch } from "react-redux"
 import { WeatherContext } from "./weatherContext"
@@ -16,9 +16,14 @@ import {
 } from "../api/airPollutionApi"
 import { setError as setWeatherUiError } from "../features/weather/slice"
 import * as Constants from "../utils/constants"
-import * as Utils from "../utils/index"
-import type { GpsPosition } from "../utils/index"
 import { ERROR_BROWSER_GEOLOCATION_OFF } from "../utils/constants"
+import { isValidCoordinates } from "../utils/geo"
+import type { GpsPosition } from "../utils/geo"
+import { getURLParam } from "../browser/url"
+import { getLocalStorageItem, setLocalStorageItem } from "../browser/storage"
+import { getBrowserGeoPosition } from "../browser/geolocation"
+import { savePosition } from "../features/api/services/positionStorage"
+import { placeLinkIntoClipBoard } from "../features/api/services/shareLink"
 import type { AppDispatch } from "../store/types"
 
 interface WeatherProviderProps {
@@ -30,21 +35,21 @@ interface WeatherProviderProps {
  * Runs once as a lazy state initializer — avoids setState inside an effect.
  */
 function resolveInitialCoords(): { lat?: number; lon?: number } {
-  const urlLat = Utils.getURLParam(Constants.URL_PARAM_LAT)
-  const urlLon = Utils.getURLParam(Constants.URL_PARAM_LON)
+  const urlLat = getURLParam(Constants.URL_PARAM_LAT)
+  const urlLon = getURLParam(Constants.URL_PARAM_LON)
   if (urlLat && urlLon) {
     const lat = Number(urlLat)
     const lon = Number(urlLon)
-    if (Utils.isValidCoordinates(lat, lon)) {
+    if (isValidCoordinates(lat, lon)) {
       return { lat, lon }
     }
     // Invalid URL params — fall through to localStorage / geolocation
   }
 
-  const stored = Utils.getLocalStorageItem(
+  const stored = getLocalStorageItem(
     Constants.LOCAL_STORAGE_KEY_GPS_POSITION,
   ) as GpsPosition | null
-  if (stored && Utils.isValidCoordinates(stored.lat, stored.lon)) {
+  if (stored && isValidCoordinates(stored.lat, stored.lon)) {
     return { lat: stored.lat, lon: stored.lon }
   }
 
@@ -61,8 +66,6 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const [city, setCity] = useState<string>("")
   const [searchCity, setSearchCity] = useState<string>("")
 
-  // React 19: useOptimistic for immediate UI updates during search
-  const [optimisticCity, setOptimisticCity] = useOptimistic(city)
   const [coords, setCoords] = useState<{
     lat?: number
     lon?: number
@@ -72,7 +75,7 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const hasCoords =
     coords.lat !== undefined &&
     coords.lon !== undefined &&
-    Utils.isValidCoordinates(coords.lat, coords.lon)
+    isValidCoordinates(coords.lat, coords.lon)
   const hasCity = searchCity !== ""
 
   const latLon = { lat: coords.lat ?? 0, lon: coords.lon ?? 0 }
@@ -108,7 +111,7 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   // Hide welcome modal and save to local storage
   const hideModal = () => {
     setModal((prevState) => !prevState)
-    Utils.setLocalStorageItem(Constants.LOCAL_STORAGE_KEY_WELCOME_MODAL, true)
+    setLocalStorageItem(Constants.LOCAL_STORAGE_KEY_WELCOME_MODAL, true)
   }
 
   // Hide error notification and clear UI error state
@@ -124,11 +127,11 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
 
     const controller = new AbortController()
 
-    Utils.getBrowserGeoPosition()
+    getBrowserGeoPosition()
       .then(({ latitude, longitude }) => {
         if (controller.signal.aborted) return
         setCoords({ lat: latitude, lon: longitude })
-        Utils.savePosition(latitude, longitude)
+        savePosition(latitude, longitude)
       })
       .catch((err) => {
         if (controller.signal.aborted) return
@@ -142,12 +145,10 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
     return () => controller.abort()
   }, [])
 
-  // Search weather and forecast data by city name with optimistic updates
+  // Search weather and forecast data by city name
   const searchByCity = (cityParam?: string) => {
     const targetCity = cityParam || city
     if (targetCity && targetCity !== "") {
-      // React 19: Set optimistic state immediately for better UX
-      setOptimisticCity(targetCity)
       setSearchCity(targetCity)
     }
   }
@@ -156,7 +157,7 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   // so that a city search shares the searched city, not the user's GPS location.
   const copyShareUrl = () => {
     const activeCoord = weatherData?.data?.coord
-    Utils.placeLinkIntoClipBoard(activeCoord?.lat, activeCoord?.lon)
+    placeLinkIntoClipBoard(activeCoord?.lat, activeCoord?.lon)
       .then(() => {
         setInfo(Constants.MESSAGE_URL_COPIED)
       })
@@ -169,7 +170,7 @@ export const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
   const contextValue = {
     error,
     hideError,
-    city: optimisticCity,
+    city,
     setCity,
     modal,
     hideModal,

@@ -1,32 +1,27 @@
 import type { FC } from "react"
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { useWeather } from "../../providers/weatherContext"
 import styles from "./styles.module.scss"
 
 const Search: FC = () => {
   const { city, setCity, searchByCity } = useWeather()
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = () => {
     searchByCity()
-  }, [searchByCity])
+  }
 
-  // Defining the keydown event handler using useCallback for better performance
-  const handleKeyboard = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key?.toLocaleLowerCase() === "enter") {
-        handleSearch()
-      }
-    },
-    [handleSearch],
-  )
+  const handleKeyboard = (event: KeyboardEvent) => {
+    if (event.key?.toLocaleLowerCase() === "enter") {
+      handleSearch()
+    }
+  }
 
-  // Attaching and detaching the event listener using useEffect
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboard)
     return () => {
       document.removeEventListener("keydown", handleKeyboard)
     }
-  }, [handleKeyboard])
+  })
 
   return (
     <div className={styles.search}>

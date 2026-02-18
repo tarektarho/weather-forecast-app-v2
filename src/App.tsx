@@ -1,5 +1,5 @@
 import type { FC } from "react"
-import Dashboard from "./components/Dashboard/Dashboard"
+import Dashboard from "./pages/Dashboard/Dashboard"
 import { WeatherProvider } from "./providers/weatherProvider"
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"
 

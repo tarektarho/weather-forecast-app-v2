@@ -7,7 +7,11 @@ import { WeatherProvider } from "../weatherProvider"
 import { useWeather } from "../weatherContext"
 import { baseApi } from "../../api/baseApi"
 import weatherUiReducer from "../../features/weather/slice"
-import * as Utils from "../../utils/index"
+import * as UrlModule from "../../browser/url"
+import * as StorageModule from "../../browser/storage"
+import * as GeoModule from "../../browser/geolocation"
+import * as PositionStorageModule from "../../features/api/services/positionStorage"
+import * as ShareLinkModule from "../../features/api/services/shareLink"
 import * as Constants from "../../utils/constants"
 import { useGetWeatherByCityQuery } from "../../api/weatherApi"
 
@@ -15,17 +19,36 @@ import { useGetWeatherByCityQuery } from "../../api/weatherApi"
 // Mocks
 // ---------------------------------------------------------------------------
 
-vi.mock("../../utils/index", async (importOriginal) => {
-  const actual = (await importOriginal()) as typeof Utils
+vi.mock("../../browser/url", async (importOriginal) => {
+  const actual = (await importOriginal()) as typeof UrlModule
+  return { ...actual, getURLParam: vi.fn().mockReturnValue(null) }
+})
+
+vi.mock("../../browser/storage", async (importOriginal) => {
+  const actual = (await importOriginal()) as typeof StorageModule
   return {
     ...actual,
-    getURLParam: vi.fn().mockReturnValue(null),
     getLocalStorageItem: vi.fn().mockReturnValue(null),
     setLocalStorageItem: vi.fn(),
-    getBrowserGeoPosition: vi.fn(),
-    savePosition: vi.fn(),
-    placeLinkIntoClipBoard: vi.fn(),
   }
+})
+
+vi.mock("../../browser/geolocation", async (importOriginal) => {
+  const actual = (await importOriginal()) as typeof GeoModule
+  return { ...actual, getBrowserGeoPosition: vi.fn() }
+})
+
+vi.mock(
+  "../../features/api/services/positionStorage",
+  async (importOriginal) => {
+    const actual = (await importOriginal()) as typeof PositionStorageModule
+    return { ...actual, savePosition: vi.fn() }
+  },
+)
+
+vi.mock("../../features/api/services/shareLink", async (importOriginal) => {
+  const actual = (await importOriginal()) as typeof ShareLinkModule
+  return { ...actual, placeLinkIntoClipBoard: vi.fn() }
 })
 
 vi.mock("../../api/weatherApi", () => ({
@@ -178,9 +201,11 @@ beforeEach(() => {
   localStorage.clear()
 
   // Default: no URL params, no localStorage, geolocation never resolves
-  vi.mocked(Utils.getURLParam).mockReturnValue(null)
-  vi.mocked(Utils.getLocalStorageItem).mockReturnValue(null)
-  vi.mocked(Utils.getBrowserGeoPosition).mockReturnValue(new Promise(() => {}))
+  vi.mocked(UrlModule.getURLParam).mockReturnValue(null)
+  vi.mocked(StorageModule.getLocalStorageItem).mockReturnValue(null)
+  vi.mocked(GeoModule.getBrowserGeoPosition).mockReturnValue(
+    new Promise(() => {}),
+  )
 })
 
 describe("WeatherProvider", () => {
@@ -208,7 +233,7 @@ describe("WeatherProvider", () => {
 
 describe("resolveInitialCoords – URL params", () => {
   it("reads lat/lon from URL params synchronously", () => {
-    vi.mocked(Utils.getURLParam).mockImplementation((param: string) => {
+    vi.mocked(UrlModule.getURLParam).mockImplementation((param: string) => {
       if (param === Constants.URL_PARAM_LAT) return "52.37"
       if (param === Constants.URL_PARAM_LON) return "4.89"
       return null
@@ -217,11 +242,11 @@ describe("resolveInitialCoords – URL params", () => {
     renderWithProvider()
 
     // Should NOT trigger browser geolocation when URL params are present
-    expect(Utils.getBrowserGeoPosition).not.toHaveBeenCalled()
+    expect(GeoModule.getBrowserGeoPosition).not.toHaveBeenCalled()
   })
 
   it("falls through to geolocation when URL params are invalid", () => {
-    vi.mocked(Utils.getURLParam).mockImplementation((param: string) => {
+    vi.mocked(UrlModule.getURLParam).mockImplementation((param: string) => {
       if (param === Constants.URL_PARAM_LAT) return "999"
       if (param === Constants.URL_PARAM_LON) return "abc"
       return null
@@ -230,46 +255,50 @@ describe("resolveInitialCoords – URL params", () => {
     renderWithProvider()
 
     // Invalid coords should be ignored → fallback to geolocation
-    expect(Utils.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
+    expect(GeoModule.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
   })
 })
 
 describe("resolveInitialCoords – localStorage", () => {
   it("reads lat/lon from localStorage when no URL params", () => {
-    vi.mocked(Utils.getLocalStorageItem).mockImplementation((key: string) => {
-      if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
-        return { lat: 48.85, lon: 2.35 }
-      }
-      return null
-    })
+    vi.mocked(StorageModule.getLocalStorageItem).mockImplementation(
+      (key: string) => {
+        if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
+          return { lat: 48.85, lon: 2.35 }
+        }
+        return null
+      },
+    )
 
     renderWithProvider()
 
-    expect(Utils.getBrowserGeoPosition).not.toHaveBeenCalled()
+    expect(GeoModule.getBrowserGeoPosition).not.toHaveBeenCalled()
   })
 
   it("falls through to geolocation when localStorage coords are invalid", () => {
-    vi.mocked(Utils.getLocalStorageItem).mockImplementation((key: string) => {
-      if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
-        return { lat: 999, lon: -999 }
-      }
-      return null
-    })
+    vi.mocked(StorageModule.getLocalStorageItem).mockImplementation(
+      (key: string) => {
+        if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
+          return { lat: 999, lon: -999 }
+        }
+        return null
+      },
+    )
 
     renderWithProvider()
 
-    expect(Utils.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
+    expect(GeoModule.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
   })
 })
 
 describe("geolocation effect", () => {
   it("calls getBrowserGeoPosition when no coords available", () => {
     renderWithProvider()
-    expect(Utils.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
+    expect(GeoModule.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
   })
 
   it("sets lat/lon and saves position on successful geolocation", async () => {
-    vi.mocked(Utils.getBrowserGeoPosition).mockResolvedValue({
+    vi.mocked(GeoModule.getBrowserGeoPosition).mockResolvedValue({
       latitude: 40.71,
       longitude: -74.0,
     })
@@ -277,12 +306,15 @@ describe("geolocation effect", () => {
     renderWithProvider()
 
     await waitFor(() => {
-      expect(Utils.savePosition).toHaveBeenCalledWith(40.71, -74.0)
+      expect(PositionStorageModule.savePosition).toHaveBeenCalledWith(
+        40.71,
+        -74.0,
+      )
     })
   })
 
   it("sets error when geolocation fails with an Error", async () => {
-    vi.mocked(Utils.getBrowserGeoPosition).mockRejectedValue(
+    vi.mocked(GeoModule.getBrowserGeoPosition).mockRejectedValue(
       new Error("User denied geolocation"),
     )
 
@@ -296,7 +328,7 @@ describe("geolocation effect", () => {
   })
 
   it("sets fallback error when geolocation fails with non-Error", async () => {
-    vi.mocked(Utils.getBrowserGeoPosition).mockRejectedValue("unknown")
+    vi.mocked(GeoModule.getBrowserGeoPosition).mockRejectedValue("unknown")
 
     renderWithProvider()
 
@@ -318,7 +350,7 @@ describe("hideModal", () => {
     await user.click(screen.getByTestId("hide-modal"))
 
     expect(screen.getByTestId("modal").textContent).toBe("false")
-    expect(Utils.setLocalStorageItem).toHaveBeenCalledWith(
+    expect(StorageModule.setLocalStorageItem).toHaveBeenCalledWith(
       Constants.LOCAL_STORAGE_KEY_WELCOME_MODAL,
       true,
     )
@@ -360,7 +392,9 @@ describe("searchByCity", () => {
 
 describe("copyShareUrl", () => {
   it("sets info message on success", async () => {
-    vi.mocked(Utils.placeLinkIntoClipBoard).mockResolvedValue(undefined)
+    vi.mocked(ShareLinkModule.placeLinkIntoClipBoard).mockResolvedValue(
+      undefined,
+    )
     const user = userEvent.setup()
     renderWithProvider()
 
@@ -374,7 +408,7 @@ describe("copyShareUrl", () => {
   })
 
   it("sets error message on failure (string rejection)", async () => {
-    vi.mocked(Utils.placeLinkIntoClipBoard).mockRejectedValue(
+    vi.mocked(ShareLinkModule.placeLinkIntoClipBoard).mockRejectedValue(
       "clipboard failed",
     )
     const user = userEvent.setup()
@@ -388,7 +422,7 @@ describe("copyShareUrl", () => {
   })
 
   it("sets generic error on non-string rejection", async () => {
-    vi.mocked(Utils.placeLinkIntoClipBoard).mockRejectedValue(42)
+    vi.mocked(ShareLinkModule.placeLinkIntoClipBoard).mockRejectedValue(42)
     const user = userEvent.setup()
     renderWithProvider()
 
@@ -413,15 +447,19 @@ describe("copyShareUrl", () => {
       refetch: () => {},
     } as unknown as ReturnType<typeof useGetWeatherByLatLonQuery>)
 
-    vi.mocked(Utils.placeLinkIntoClipBoard).mockResolvedValue(undefined)
+    vi.mocked(ShareLinkModule.placeLinkIntoClipBoard).mockResolvedValue(
+      undefined,
+    )
 
     // Provide valid coords so the hook isn't skipped
-    vi.mocked(Utils.getLocalStorageItem).mockImplementation((key: string) => {
-      if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
-        return { lat: 52, lon: 5 }
-      }
-      return null
-    })
+    vi.mocked(StorageModule.getLocalStorageItem).mockImplementation(
+      (key: string) => {
+        if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
+          return { lat: 52, lon: 5 }
+        }
+        return null
+      },
+    )
 
     const user = userEvent.setup()
     renderWithProvider()
@@ -429,19 +467,24 @@ describe("copyShareUrl", () => {
     await user.click(screen.getByTestId("copy-url"))
 
     await waitFor(() => {
-      expect(Utils.placeLinkIntoClipBoard).toHaveBeenCalledWith(51.51, -0.13)
+      expect(ShareLinkModule.placeLinkIntoClipBoard).toHaveBeenCalledWith(
+        51.51,
+        -0.13,
+      )
     })
   })
 
   it("calls placeLinkIntoClipBoard with undefined when no weather data", async () => {
-    vi.mocked(Utils.placeLinkIntoClipBoard).mockResolvedValue(undefined)
+    vi.mocked(ShareLinkModule.placeLinkIntoClipBoard).mockResolvedValue(
+      undefined,
+    )
     const user = userEvent.setup()
     renderWithProvider()
 
     await user.click(screen.getByTestId("copy-url"))
 
     await waitFor(() => {
-      expect(Utils.placeLinkIntoClipBoard).toHaveBeenCalledWith(
+      expect(ShareLinkModule.placeLinkIntoClipBoard).toHaveBeenCalledWith(
         undefined,
         undefined,
       )

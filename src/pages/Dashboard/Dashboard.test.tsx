@@ -2,9 +2,9 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import Dashboard from "./Dashboard"
 import type { WeatherContextValue } from "../../providers/weatherContext"
-import * as UtilsModule from "../../utils"
+import * as StorageModule from "../../browser/storage"
 import type WeatherData from "../../types/weather"
-import notificationStyles from "../Notification/styles.module.scss"
+import notificationStyles from "../../components/Notification/styles.module.scss"
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -23,21 +23,24 @@ vi.mock("../../providers/weatherContext", () => ({
 }))
 
 // Mock child widgets to isolate Dashboard logic
-vi.mock("../widgets/CurrentWidget/CurrentWidget", () => ({
+vi.mock("../../components/widgets/CurrentWidget/CurrentWidget", () => ({
   default: () => <div data-testid="current-widget">CurrentWidget</div>,
 }))
-vi.mock("../widgets/DailyWidget/DailyWidget", () => ({
+vi.mock("../../components/widgets/DailyWidget/DailyWidget", () => ({
   default: () => <div data-testid="daily-widget">DailyWidget</div>,
 }))
-vi.mock("../widgets/AdditionalWidget/AdditionalWidget", () => ({
+vi.mock("../../components/widgets/AdditionalWidget/AdditionalWidget", () => ({
   default: () => <div data-testid="additional-widget">AdditionalWidget</div>,
 }))
-vi.mock("../widgets/AirPollutionWidget/AirPollutionWidget", () => ({
-  default: () => (
-    <div data-testid="air-pollution-widget">AirPollutionWidget</div>
-  ),
-}))
-vi.mock("../Search/Search", () => ({
+vi.mock(
+  "../../components/widgets/AirPollutionWidget/AirPollutionWidget",
+  () => ({
+    default: () => (
+      <div data-testid="air-pollution-widget">AirPollutionWidget</div>
+    ),
+  }),
+)
+vi.mock("../../components/Search/Search", () => ({
   default: () => <div data-testid="search">Search</div>,
 }))
 
@@ -228,14 +231,14 @@ describe("Dashboard – Modal", () => {
   })
 
   it("shows welcome modal when modal=true and localStorage has no key", () => {
-    vi.spyOn(UtilsModule, "getLocalStorageItem").mockReturnValue(null)
+    vi.spyOn(StorageModule, "getLocalStorageItem").mockReturnValue(null)
     mockUseWeather.mockReturnValue(defaultContext({ modal: true }))
     render(<Dashboard />)
     expect(screen.getByTestId("modal-container")).toBeVisible()
   })
 
   it("hides modal after clicking continue", () => {
-    vi.spyOn(UtilsModule, "getLocalStorageItem").mockReturnValue(null)
+    vi.spyOn(StorageModule, "getLocalStorageItem").mockReturnValue(null)
     mockUseWeather.mockReturnValue(defaultContext({ modal: true }))
     render(<Dashboard />)
 
@@ -250,7 +253,7 @@ describe("Dashboard – Modal", () => {
   })
 
   it("does not show modal when localStorage already has welcomeModal", () => {
-    vi.spyOn(UtilsModule, "getLocalStorageItem").mockReturnValue(true)
+    vi.spyOn(StorageModule, "getLocalStorageItem").mockReturnValue(true)
     mockUseWeather.mockReturnValue(defaultContext({ modal: true }))
     render(<Dashboard />)
     expect(screen.queryByTestId("modal-container")).toBeNull()

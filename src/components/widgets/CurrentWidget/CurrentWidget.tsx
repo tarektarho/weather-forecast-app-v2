@@ -1,10 +1,8 @@
 import type { FC } from "react"
 import { useWeather } from "../../../providers/weatherContext"
-import {
-  getWeatherIcon,
-  resetApp,
-  convertKelvinToCelsius,
-} from "../../../utils"
+import { getWeatherIcon } from "../../../utils/date"
+import { resetApp } from "../../../features/api/services/shareLink"
+import { convertKelvinToCelsius } from "../../../utils/temperature"
 import shareIcon from "../../../assets/images/share.png"
 import resetIcon from "../../../assets/images/reset.png"
 import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"

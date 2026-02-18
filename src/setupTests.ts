@@ -36,14 +36,6 @@ class LocalStorageMock {
 
 globalThis.localStorage = new LocalStorageMock() as Storage
 
-vi.mock("./utils/index", async (importOriginal) => {
-  const mod = await importOriginal()
-  return {
-    // @ts-ignore
-    ...mod,
-    sleep: vi.fn(),
-  }
-})
 const fetchMocker = createFetchMock(vi)
 globalThis.fetch = fetch
 vi.mock("node-fetch")

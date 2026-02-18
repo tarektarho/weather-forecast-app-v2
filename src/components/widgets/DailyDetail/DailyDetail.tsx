@@ -1,12 +1,7 @@
 import type { FC } from "react"
 import type { ForecastItem } from "../../../types/forecast"
-import {
-  convertKelvinToCelsius,
-  getDay,
-  getMonth,
-  getHour,
-  getWeatherIcon,
-} from "../../../utils/index"
+import { convertKelvinToCelsius } from "../../../utils/temperature"
+import { getDay, getMonth, getHour, getWeatherIcon } from "../../../utils/date"
 import styles from "./styles.module.scss"
 
 interface DailyDetailProps {

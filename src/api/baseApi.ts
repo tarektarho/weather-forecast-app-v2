@@ -7,8 +7,8 @@ import {
   type FetchBaseQueryMeta,
 } from "@reduxjs/toolkit/query/react"
 import { API_KEY, BASE_URL_WEATHER } from "../utils/constants"
-import { sleep } from "../utils/index"
 import type { ApiErrorData } from "./types"
+import { TAG_TYPES } from "./tags"
 
 /**
  * Custom base query that appends the API key and handles error responses
@@ -38,9 +38,6 @@ const baseQueryWithApiKey: BaseQueryFn<
 
   const result = await weatherBaseQuery(requestArgs, api, extraOptions)
 
-  // Artificial delay to keep skeleton UX in sync (mirrors original sleep(300))
-  await sleep(300)
-
   // The OpenWeatherMap API returns 200 for valid responses but may return
   // non-200 with a JSON body containing a "message" field.
   if (result.error) {
@@ -57,13 +54,6 @@ const baseQueryWithApiKey: BaseQueryFn<
 
   return result
 }
-
-/**
- * Base API created with RTK Query. Individual endpoint files inject their
- * endpoints into this API using `baseApi.injectEndpoints()`.
- */
-/** Cache tag types used by providesTags / invalidatesTags across endpoints. */
-export const TAG_TYPES = ["Weather", "Forecast", "AirPollution"] as const
 
 export const baseApi = createApi({
   reducerPath: "api",
