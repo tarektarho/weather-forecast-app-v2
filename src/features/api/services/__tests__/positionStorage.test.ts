@@ -1,5 +1,4 @@
 import { savePosition } from "../positionStorage"
-import { setLocalStorageItem } from "../../../../browser/storage"
 
 // We need to read localStorage directly for assertions
 describe("features/api/services/positionStorage", () => {
