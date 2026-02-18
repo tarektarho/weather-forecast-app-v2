@@ -155,7 +155,7 @@ describe("ForecastDetail", () => {
 
     // Temperature card
     expect(screen.getByText("Temperature")).toBeInTheDocument()
-    expect(screen.getByText("22ºC")).toBeInTheDocument()
+    expect(screen.getByText("21ºC")).toBeInTheDocument()
 
     // Wind card
     expect(screen.getByText("Wind")).toBeInTheDocument()
