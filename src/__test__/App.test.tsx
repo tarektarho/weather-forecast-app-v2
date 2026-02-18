@@ -9,8 +9,8 @@ vi.mock("../providers/weatherProvider", () => ({
   ),
 }))
 
-// Mock Dashboard component
-vi.mock("../pages/Dashboard/Dashboard", () => ({
+// Mock AppRoutes to isolate App wrapper logic
+vi.mock("../routes/AppRoutes", () => ({
   default: () => <div data-testid="dashboard-mock">Dashboard Component</div>,
 }))
 

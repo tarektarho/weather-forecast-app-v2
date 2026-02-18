@@ -1,22 +1,26 @@
 import type { FC } from "react"
-import Dashboard from "./pages/Dashboard/Dashboard"
+import { BrowserRouter } from "react-router-dom"
+import AppRoutes from "./routes/AppRoutes"
 import { WeatherProvider } from "./providers/weatherProvider"
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary"
 
 /**
  * Root application component.
  *
- * Wraps the entire app in an {@link ErrorBoundary} for graceful error handling
- * and a {@link WeatherProvider} that supplies weather data via React context.
+ * Wraps the entire app in an {@link ErrorBoundary} for graceful error handling,
+ * a {@link BrowserRouter} for client-side routing, and a {@link WeatherProvider}
+ * that supplies weather data via React context.
  *
  * @component
  */
 const App: FC = () => {
   return (
     <ErrorBoundary>
-      <WeatherProvider>
-        <Dashboard />
-      </WeatherProvider>
+      <BrowserRouter basename="/weather-forecast-app-v2">
+        <WeatherProvider>
+          <AppRoutes />
+        </WeatherProvider>
+      </BrowserRouter>
     </ErrorBoundary>
   )
 }

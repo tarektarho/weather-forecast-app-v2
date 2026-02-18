@@ -37,6 +37,9 @@ jobs:
               env:
                   VITE_WEATHER_API_KEY: ${{ secrets.VITE_WEATHER_API_KEY }}
 
+            - name: Copy index.html to 404.html for SPA routing
+              run: cp build/index.html build/404.html
+
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
