@@ -7,6 +7,7 @@ import shareIcon from "../../../assets/images/share.png"
 import resetIcon from "../../../assets/images/reset.png"
 import CurrentWidgetSkeleton from "../../common/skeletons/CurrentWidgetSkeleton"
 import type WeatherData from "../../../types/weather"
+import shared from "../../../styles/shared.module.scss"
 import styles from "./styles.module.scss"
 
 /**
@@ -56,7 +57,7 @@ const CurrentWidget: FC = () => {
   // Return the CurrentWidget component with weather information
   return (
     <>
-      <div className={`widget ${styles.weatherDetail}`}>
+      <div className={`${shared.widget} ${styles.weatherDetail}`}>
         <div className={styles.widgetActions}>
           <div className={styles.iconsContainer} title="Reset" hidden>
             <img
@@ -64,6 +65,8 @@ const CurrentWidget: FC = () => {
               className={styles.currentWidgetIcon}
               src={resetIcon}
               alt="Reset"
+              width={24}
+              height={24}
             />
           </div>
           <div className={styles.iconsContainer} title="Share">
@@ -72,6 +75,8 @@ const CurrentWidget: FC = () => {
               className={styles.currentWidgetIcon}
               src={shareIcon}
               alt="Share"
+              width={24}
+              height={24}
             />
           </div>
         </div>
@@ -80,47 +85,55 @@ const CurrentWidget: FC = () => {
           className={styles.icon}
           src={getWeatherIcon(icon)}
           alt={icon}
+          width={100}
+          height={100}
           loading="lazy"
         />
         <p className={styles.weatherText}>{description}</p>
         <h3 className={styles.weatherTemp}>{convertKelvinToCelsius(temp)}º</h3>
         <p className={styles.weatherText}>{mainDetail}</p>
       </div>
-      <div className="weather-extra-wrapper">
-        <div className="widget weather-extra bg-extra1">
+      <div className={shared.weatherExtraWrapper}>
+        <div
+          className={`${shared.widget} ${shared.weatherExtra} ${shared.bgExtra1}`}
+        >
           <p>
-            <span className="weather-extra-label">Temp</span> |{" "}
-            <span className="weather-extra-label">
+            <span className={shared.weatherExtraLabel}>Temp</span> |{" "}
+            <span className={shared.weatherExtraLabel}>
               {convertKelvinToCelsius(temp)}º
             </span>
           </p>
           <p>
-            <span className="weather-extra-label">Feels like</span> |{" "}
-            <span className="weather-extra-label">
+            <span className={shared.weatherExtraLabel}>Feels like</span> |{" "}
+            <span className={shared.weatherExtraLabel}>
               {convertKelvinToCelsius(feels_like)}º
             </span>
           </p>
         </div>
-        <div className="widget weather-extra bg-extra2">
+        <div
+          className={`${shared.widget} ${shared.weatherExtra} ${shared.bgExtra2}`}
+        >
           <p>
-            <span className="weather-extra-label">Humidity</span> |{" "}
-            <span className="weather-extra-label">{humidity}%</span>
+            <span className={shared.weatherExtraLabel}>Humidity</span> |{" "}
+            <span className={shared.weatherExtraLabel}>{humidity}%</span>
           </p>
           <p>
-            <span className="weather-extra-label">Pressure</span> |{" "}
-            <span className="weather-extra-label">{pressure}</span>
+            <span className={shared.weatherExtraLabel}>Pressure</span> |{" "}
+            <span className={shared.weatherExtraLabel}>{pressure}</span>
           </p>
         </div>
-        <div className="widget weather-extra bg-extra3">
+        <div
+          className={`${shared.widget} ${shared.weatherExtra} ${shared.bgExtra3} ${shared.mb0}`}
+        >
           <p>
-            <span className="weather-extra-label">Temp max</span> |{" "}
-            <span className="weather-extra-label">
+            <span className={shared.weatherExtraLabel}>Temp max</span> |{" "}
+            <span className={shared.weatherExtraLabel}>
               {convertKelvinToCelsius(temp_max)}º
             </span>
           </p>
           <p>
-            <span className="weather-extra-label">Temp min</span> |{" "}
-            <span className="weather-extra-label">
+            <span className={shared.weatherExtraLabel}>Temp min</span> |{" "}
+            <span className={shared.weatherExtraLabel}>
               {convertKelvinToCelsius(temp_min)}º
             </span>
           </p>

@@ -1,5 +1,6 @@
 import type { FC } from "react"
 import SkeletonElement from "./SkeletonElement"
+import shared from "../../../styles/shared.module.scss"
 import skeletonStyles from "./styles.module.scss"
 import airPollutionStyles from "../../widgets/AirPollutionWidget/styles.module.scss"
 
@@ -13,11 +14,11 @@ import airPollutionStyles from "../../widgets/AirPollutionWidget/styles.module.s
 const AirPollutionWidgetSkeleton: FC = () => {
   return (
     <>
-      <div className={`${airPollutionStyles.airTitle} mb-8`}>
+      <div className={`${airPollutionStyles.airTitle} ${shared.mb8}`}>
         <SkeletonElement className={skeletonStyles.longTitle} />
         <SkeletonElement className={skeletonStyles.title} />
       </div>
-      <div className="flex-wrap">
+      <div className={shared.flexWrap}>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
           <div
             className={`${skeletonStyles.skeleton} ${airPollutionStyles.airData}`}

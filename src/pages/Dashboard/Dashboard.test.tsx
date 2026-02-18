@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import Dashboard from "./Dashboard"
 import type { WeatherContextValue } from "../../providers/weatherContext"
@@ -230,20 +230,22 @@ describe("Dashboard – Modal", () => {
     localStorage.clear()
   })
 
-  it("shows welcome modal when modal=true and localStorage has no key", () => {
+  it("shows welcome modal when modal=true and localStorage has no key", async () => {
     vi.spyOn(StorageModule, "getLocalStorageItem").mockReturnValue(null)
     mockUseWeather.mockReturnValue(defaultContext({ modal: true }))
     render(<Dashboard />)
-    expect(screen.getByTestId("modal-container")).toBeVisible()
+    expect(await screen.findByTestId("modal-container")).toBeVisible()
   })
 
-  it("hides modal after clicking continue", () => {
+  it("hides modal after clicking continue", async () => {
     vi.spyOn(StorageModule, "getLocalStorageItem").mockReturnValue(null)
     mockUseWeather.mockReturnValue(defaultContext({ modal: true }))
     render(<Dashboard />)
 
-    fireEvent.click(screen.getByTestId("hide-modal-btn"))
-    expect(mockHideModal).toHaveBeenCalledTimes(1)
+    fireEvent.click(await screen.findByTestId("hide-modal-btn"))
+    await waitFor(() => {
+      expect(mockHideModal).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("does not show modal when modal=false", () => {

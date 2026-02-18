@@ -59,7 +59,10 @@ export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithApiKey,
   tagTypes: TAG_TYPES,
-  // Keep unused cache entries for 5 minutes (300 s) before auto-removal
+  // Default: keep unused cache entries for 5 minutes (300 s)
   keepUnusedDataFor: 300,
+  // Re-fetch stale data when the browser tab regains focus or reconnects
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   endpoints: () => ({}),
 })

@@ -27,7 +27,6 @@
 
   .icon {
     display: block;
-    width: 90px;
     margin: 0 auto;
   }
 
@@ -38,12 +37,5 @@
 
   .daily-text {
     color: $dark;
-  }
-}
-
-/* TABLET */
-@media (min-width: 768px) {
-  .daily-item .icon {
-    width: 120px;
   }
 }

@@ -5,6 +5,7 @@ import Sunset from "../../../assets/images/night-image.png"
 import { getHour } from "../../../utils/date"
 import AdditionalWidgetSkeleton from "../../common/skeletons/AdditionalWidgetSkeleton"
 import type WeatherData from "../../../types/weather"
+import shared from "../../../styles/shared.module.scss"
 import styles from "./styles.module.scss"
 
 /**
@@ -48,27 +49,35 @@ const AdditionalWidget: FC = () => {
   const { timezone } = weatherData.data
 
   return (
-    <div className={`weather-extra-wrapper ${styles.myOtherStep}`}>
+    <div className={`${shared.weatherExtraWrapper} ${styles.myOtherStep}`}>
       {/* Widget title */}
-      <h4 className="widget-title">More data from OpenWeather</h4>
-      <div className="extra-info-container">
+      <h2 className={shared.widgetTitle}>More data from OpenWeather</h2>
+      <div className={shared.extraInfoContainer}>
         {/* Sunrise information */}
-        <div className="widget weather-extra bg-extra1">
+        <div
+          className={`${shared.widget} ${shared.weatherExtra} ${shared.bgExtra1}`}
+        >
           <img
-            className="weather-extra-img"
+            className={shared.weatherExtraImg}
             src={Sunrise}
             alt="sunrise"
+            width={42}
+            height={42}
             loading="lazy"
           />
           {/* Display the sunrise time */}
           <h4 data-testid="sunrise">{getHour(sunrise, timezone)}</h4>
         </div>
         {/* Sunset information */}
-        <div className="widget weather-extra bg-extra4 mb-0">
+        <div
+          className={`${shared.widget} ${shared.weatherExtra} ${shared.bgExtra4} ${shared.mb0}`}
+        >
           <img
-            className="weather-extra-img"
+            className={shared.weatherExtraImg}
             src={Sunset}
             alt="sunset"
+            width={42}
+            height={42}
             loading="lazy"
           />
           {/* Display the sunset time */}

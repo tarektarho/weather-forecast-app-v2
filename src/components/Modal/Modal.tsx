@@ -47,7 +47,14 @@ const Modal: FC<ModalProps> = ({ hideModal }) => {
             </ul>
           </div>
           {/* Display an image of a map using the imported MapImg. */}
-          <img className={styles.modalImage} src={MapImg} alt="map" />
+          <img
+            className={styles.modalImage}
+            src={MapImg}
+            alt="map"
+            width={300}
+            height={200}
+            loading="lazy"
+          />
         </div>
 
         <div className={styles.modalButton}>

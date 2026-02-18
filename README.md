@@ -71,17 +71,19 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
 
 3. Get your API key and configure the environment:
    - Sign up at [OpenWeather](https://home.openweathermap.org/users/sign_up) to get a free API key
-   - Copy the example env file and add your key:
+   - Copy the example env file and create a local override:
 
      ```sh
-     cp .env.example .env
+     cp .env.example .env.local
      ```
 
-   - Open `.env` and replace `your_api_key_here` with your actual API key:
+   - Open `.env.local` and replace `your_api_key_here` with your actual API key:
 
      ```
      VITE_WEATHER_API_KEY=your_api_key_here
      ```
+
+   > `.env.local` is git-ignored by default in Vite projects and is the recommended place for secrets during local development. See the [Vite Env docs](https://vite.dev/guide/env-and-mode.html) for the full loading order.
 
 4. Start the dev server:
 
@@ -95,7 +97,7 @@ All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react
    pnpm test
    ```
 
-> **Note:** If the API key is expired or missing, generate a new one at [OpenWeather Sign Up](https://home.openweathermap.org/users/sign_up) and set `VITE_WEATHER_API_KEY` in your environment.
+> **Note:** If the API key is expired or missing, generate a new one at [OpenWeather Sign Up](https://home.openweathermap.org/users/sign_up) and set `VITE_WEATHER_API_KEY` in your `.env.local` file.
 
 ## Dependencies
 

@@ -1,0 +1,18 @@
+@use "../../../styles/variables" as *;
+
+.flex-item {
+    .flex-item-label {
+        display: inline-block;
+        width: 80px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+    .flex-item {
+        flex: 1 1 0px;
+        align-self: stretch;
+    }
+}
