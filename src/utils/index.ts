@@ -128,18 +128,47 @@ export const resetApp = (): void => {
 
 /**
  * Copy the app's link with GPS coordinates to clipboard.
+ * Uses the provided coordinates (e.g. from the active weather result),
+ * falling back to localStorage if none are given.
+ * @param lat - Optional latitude override.
+ * @param lon - Optional longitude override.
  * @returns A promise that resolves when copying is successful.
  */
-export const placeLinkIntoClipBoard = (): Promise<void> => {
-  const location = getLocalStorageItem(LOCAL_STORAGE_KEY_GPS_POSITION)
-
-  if (!isGpsPosition(location)) {
-    // Handle the case when location is missing or invalid
-    return Promise.reject("Location is not available.")
+export const placeLinkIntoClipBoard = (
+  lat?: number,
+  lon?: number,
+): Promise<void> => {
+  if (lat === undefined || lon === undefined) {
+    const location = getLocalStorageItem(LOCAL_STORAGE_KEY_GPS_POSITION)
+    if (!isGpsPosition(location)) {
+      return Promise.reject("Location is not available.")
+    }
+    lat = location.lat
+    lon = location.lon
   }
-  const { lat, lon } = location
-  const link = `${window.location.href}?${URL_PARAM_LAT}=${lat}&${URL_PARAM_LON}=${lon}`
+
+  const baseUrl = `${window.location.origin}${window.location.pathname}`
+  const link = `${baseUrl}?${URL_PARAM_LAT}=${lat}&${URL_PARAM_LON}=${lon}`
   return navigator.clipboard.writeText(link)
+}
+
+/**
+ * Validate that latitude and longitude values are within valid ranges.
+ * @param lat - Latitude (-90 to 90).
+ * @param lon - Longitude (-180 to 180).
+ * @returns True if coordinates are valid.
+ */
+export const isValidCoordinates = (lat: number, lon: number): boolean => {
+  return (
+    !isNaN(lat) &&
+    !isNaN(lon) &&
+    isFinite(lat) &&
+    isFinite(lon) &&
+    lat >= -90 &&
+    lat <= 90 &&
+    lon >= -180 &&
+    lon <= 180
+  )
 }
 
 /**

@@ -219,6 +219,19 @@ describe("resolveInitialCoords – URL params", () => {
     // Should NOT trigger browser geolocation when URL params are present
     expect(Utils.getBrowserGeoPosition).not.toHaveBeenCalled()
   })
+
+  it("falls through to geolocation when URL params are invalid", () => {
+    vi.mocked(Utils.getURLParam).mockImplementation((param: string) => {
+      if (param === Constants.URL_PARAM_LAT) return "999"
+      if (param === Constants.URL_PARAM_LON) return "abc"
+      return null
+    })
+
+    renderWithProvider()
+
+    // Invalid coords should be ignored → fallback to geolocation
+    expect(Utils.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe("resolveInitialCoords – localStorage", () => {
@@ -233,6 +246,19 @@ describe("resolveInitialCoords – localStorage", () => {
     renderWithProvider()
 
     expect(Utils.getBrowserGeoPosition).not.toHaveBeenCalled()
+  })
+
+  it("falls through to geolocation when localStorage coords are invalid", () => {
+    vi.mocked(Utils.getLocalStorageItem).mockImplementation((key: string) => {
+      if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
+        return { lat: 999, lon: -999 }
+      }
+      return null
+    })
+
+    renderWithProvider()
+
+    expect(Utils.getBrowserGeoPosition).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -370,6 +396,55 @@ describe("copyShareUrl", () => {
 
     await waitFor(() => {
       expect(screen.getByTestId("error").textContent).toBe("Failed to copy URL")
+    })
+  })
+
+  it("passes active weatherData coord to placeLinkIntoClipBoard", async () => {
+    // Mock weatherByLatLon to return data with coord
+    const { useGetWeatherByLatLonQuery } = await import("../../api/weatherApi")
+    vi.mocked(useGetWeatherByLatLonQuery).mockReturnValue({
+      data: { coord: { lat: 51.51, lon: -0.13 } },
+      error: undefined,
+      isLoading: false,
+      isFetching: false,
+      isSuccess: true,
+      isError: false,
+      isUninitialized: false,
+      refetch: () => {},
+    } as unknown as ReturnType<typeof useGetWeatherByLatLonQuery>)
+
+    vi.mocked(Utils.placeLinkIntoClipBoard).mockResolvedValue(undefined)
+
+    // Provide valid coords so the hook isn't skipped
+    vi.mocked(Utils.getLocalStorageItem).mockImplementation((key: string) => {
+      if (key === Constants.LOCAL_STORAGE_KEY_GPS_POSITION) {
+        return { lat: 52, lon: 5 }
+      }
+      return null
+    })
+
+    const user = userEvent.setup()
+    renderWithProvider()
+
+    await user.click(screen.getByTestId("copy-url"))
+
+    await waitFor(() => {
+      expect(Utils.placeLinkIntoClipBoard).toHaveBeenCalledWith(51.51, -0.13)
+    })
+  })
+
+  it("calls placeLinkIntoClipBoard with undefined when no weather data", async () => {
+    vi.mocked(Utils.placeLinkIntoClipBoard).mockResolvedValue(undefined)
+    const user = userEvent.setup()
+    renderWithProvider()
+
+    await user.click(screen.getByTestId("copy-url"))
+
+    await waitFor(() => {
+      expect(Utils.placeLinkIntoClipBoard).toHaveBeenCalledWith(
+        undefined,
+        undefined,
+      )
     })
   })
 })
