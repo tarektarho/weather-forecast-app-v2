@@ -46,6 +46,9 @@ jobs:
       - name: Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v5
+        with:
+          directory: ./coverage
+          files: coverage-final.json
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
