@@ -63,9 +63,9 @@ const DailyWidget: FC = (): JSX.Element => {
   // Render the forecast data if available
   return (
     <>
-      <h3 className={shared.widgetTitle} data-testid="daily-widget-title">
+      <h2 className={shared.widgetTitle} data-testid="daily-widget-title">
         Forecast next 5 days
-      </h3>
+      </h2>
       <div className={styles.dailyContainer}>
         <div className={styles.dailyWrapper}>
           {forecastList &&

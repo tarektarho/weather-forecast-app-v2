@@ -35,6 +35,8 @@ const Notification: FC<NotificationProps> = ({
           className={styles.notificationIcon}
           src={ErrorIcon}
           alt={type}
+          width={16}
+          height={16}
           data-testid="error-icon"
         />
       )
@@ -59,7 +61,13 @@ const Notification: FC<NotificationProps> = ({
         role="button"
         aria-label="Close notification"
       >
-        <img className={styles.closeIcon} src={CloseIcon} alt="closeIcon" />{" "}
+        <img
+          className={styles.closeIcon}
+          src={CloseIcon}
+          alt="closeIcon"
+          width={16}
+          height={16}
+        />{" "}
         {/* Display the close icon. */}
       </div>
     </div>

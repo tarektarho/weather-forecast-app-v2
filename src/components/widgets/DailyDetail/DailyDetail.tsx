@@ -57,6 +57,8 @@ const DailyDetail: FC<DailyDetailProps> = ({
         className={styles.icon}
         src={getWeatherIcon(weather[0].icon)}
         alt={`Weather icon for ${weather[0].description}`}
+        width={90}
+        height={90}
         loading="lazy"
       />
       <h3 className={styles.dailyTemp}>{convertKelvinToCelsius(main.temp)}º</h3>

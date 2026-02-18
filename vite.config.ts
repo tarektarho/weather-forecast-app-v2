@@ -1,5 +1,59 @@
 import { defineConfig } from "vitest/config"
+import type { Plugin } from "vite"
 import react from "@vitejs/plugin-react"
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer"
+
+/**
+ * Inlines all emitted CSS into a `<style>` tag in index.html and removes the
+ * standalone CSS asset. This eliminates the CSS file from the critical request
+ * chain so the browser only needs HTML → JS (no extra CSS round-trip).
+ */
+function inlineCssPlugin(): Plugin {
+  return {
+    name: "vite-plugin-inline-css",
+    enforce: "post",
+    apply: "build",
+    generateBundle(_, bundle) {
+      const cssFileNames: string[] = []
+      let cssSource = ""
+
+      for (const [fileName, chunk] of Object.entries(bundle)) {
+        if (chunk.type === "asset" && fileName.endsWith(".css")) {
+          cssSource +=
+            typeof chunk.source === "string"
+              ? chunk.source
+              : chunk.source.toString()
+          cssFileNames.push(fileName)
+        }
+      }
+
+      if (!cssSource) return
+
+      for (const chunk of Object.values(bundle)) {
+        if (
+          chunk.type === "asset" &&
+          typeof chunk.fileName === "string" &&
+          chunk.fileName.endsWith(".html")
+        ) {
+          let html =
+            typeof chunk.source === "string"
+              ? chunk.source
+              : chunk.source.toString()
+          // Remove <link rel="stylesheet" …> tags
+          html = html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>\s*/g, "")
+          // Inject inlined CSS before </head>
+          html = html.replace("</head>", `<style>${cssSource}</style>\n</head>`)
+          chunk.source = html
+        }
+      }
+
+      // Delete the standalone CSS files from the output
+      for (const name of cssFileNames) {
+        delete bundle[name]
+      }
+    },
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,6 +72,12 @@ export default defineConfig({
         plugins: [["babel-plugin-react-compiler", {}]],
       },
     }),
+    ViteImageOptimizer({
+      png: { quality: 80 },
+      jpeg: { quality: 75 },
+      webp: { quality: 80 },
+    }),
+    inlineCssPlugin(),
   ],
   server: {
     open: true,
@@ -25,6 +85,14 @@ export default defineConfig({
   build: {
     outDir: "build",
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          redux: ["@reduxjs/toolkit", "react-redux"],
+        },
+      },
+    },
   },
   test: {
     globals: true,

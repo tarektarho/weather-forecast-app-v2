@@ -7,11 +7,14 @@ export const airPollutionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAirPollutionByLatLon: builder.query<AirPollutionData, LatLonQueryArg>({
       query: ({ lat, lon }) => airPollutionEndpoints.byLatLon(lat, lon),
+      // Air pollution data updates hourly — cache for 30 minutes
+      keepUnusedDataFor: 1800,
       providesTags: (_result, _error, { lat, lon }) => [
         { type: "AirPollution", id: `${lat},${lon}` },
       ],
     }),
     getAirPollutionByCity: builder.query<AirPollutionData, CityQueryArg>({
+      keepUnusedDataFor: 1800,
       providesTags: (_result, _error, { city }) => [
         { type: "AirPollution", id: city.toLowerCase() },
       ],

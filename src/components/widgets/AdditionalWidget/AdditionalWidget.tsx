@@ -51,7 +51,7 @@ const AdditionalWidget: FC = () => {
   return (
     <div className={`${shared.weatherExtraWrapper} ${styles.myOtherStep}`}>
       {/* Widget title */}
-      <h4 className={shared.widgetTitle}>More data from OpenWeather</h4>
+      <h2 className={shared.widgetTitle}>More data from OpenWeather</h2>
       <div className={shared.extraInfoContainer}>
         {/* Sunrise information */}
         <div
@@ -61,6 +61,8 @@ const AdditionalWidget: FC = () => {
             className={shared.weatherExtraImg}
             src={Sunrise}
             alt="sunrise"
+            width={42}
+            height={42}
             loading="lazy"
           />
           {/* Display the sunrise time */}
@@ -74,6 +76,8 @@ const AdditionalWidget: FC = () => {
             className={shared.weatherExtraImg}
             src={Sunset}
             alt="sunset"
+            width={42}
+            height={42}
             loading="lazy"
           />
           {/* Display the sunset time */}

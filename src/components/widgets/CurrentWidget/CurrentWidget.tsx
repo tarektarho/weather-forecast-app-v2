@@ -65,6 +65,8 @@ const CurrentWidget: FC = () => {
               className={styles.currentWidgetIcon}
               src={resetIcon}
               alt="Reset"
+              width={24}
+              height={24}
             />
           </div>
           <div className={styles.iconsContainer} title="Share">
@@ -73,6 +75,8 @@ const CurrentWidget: FC = () => {
               className={styles.currentWidgetIcon}
               src={shareIcon}
               alt="Share"
+              width={24}
+              height={24}
             />
           </div>
         </div>
@@ -81,6 +85,8 @@ const CurrentWidget: FC = () => {
           className={styles.icon}
           src={getWeatherIcon(icon)}
           alt={icon}
+          width={100}
+          height={100}
           loading="lazy"
         />
         <p className={styles.weatherText}>{description}</p>
