@@ -8,6 +8,7 @@ import {
 } from "@reduxjs/toolkit/query/react"
 import { API_KEY, BASE_URL_WEATHER } from "../utils/constants"
 import { sleep } from "../utils/index"
+import type { ApiErrorData } from "./types"
 
 /**
  * Custom base query that appends the API key and handles error responses
@@ -37,13 +38,13 @@ const baseQueryWithApiKey: BaseQueryFn<
 
   const result = await weatherBaseQuery(requestArgs, api, extraOptions)
 
-  // Artificial delay to keep skeleton UX in sync (mirrors original sleep(1000))
-  await sleep(1000)
+  // Artificial delay to keep skeleton UX in sync (mirrors original sleep(300))
+  await sleep(300)
 
   // The OpenWeatherMap API returns 200 for valid responses but may return
   // non-200 with a JSON body containing a "message" field.
   if (result.error) {
-    const errorData = result.error.data as { message?: string } | undefined
+    const errorData = result.error.data as ApiErrorData | undefined
     return {
       error: {
         status: result.error.status,

@@ -1,19 +1,17 @@
 import { baseApi } from "./baseApi"
 import { airPollutionEndpoints, geoEndpoints } from "./endpoints"
+import type { LatLonQueryArg, CityQueryArg, GeocodingResult } from "./types"
 import type AirPollutionData from "../types/airPollution"
 
 export const airPollutionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAirPollutionByLatLon: builder.query<
-      AirPollutionData,
-      { lat: number; lon: number }
-    >({
+    getAirPollutionByLatLon: builder.query<AirPollutionData, LatLonQueryArg>({
       query: ({ lat, lon }) => airPollutionEndpoints.byLatLon(lat, lon),
       providesTags: (_result, _error, { lat, lon }) => [
         { type: "AirPollution", id: `${lat},${lon}` },
       ],
     }),
-    getAirPollutionByCity: builder.query<AirPollutionData, { city: string }>({
+    getAirPollutionByCity: builder.query<AirPollutionData, CityQueryArg>({
       providesTags: (_result, _error, { city }) => [
         { type: "AirPollution", id: city.toLowerCase() },
       ],
@@ -31,7 +29,7 @@ export const airPollutionApi = baseApi.injectEndpoints({
           return { error: geoResult.error }
         }
 
-        const geoData = geoResult.data as Array<{ lat: number; lon: number }>
+        const geoData = geoResult.data as GeocodingResult[]
         const [firstResult] = geoData
         if (!firstResult) {
           return { error: { status: 404, data: "Invalid city" } }
