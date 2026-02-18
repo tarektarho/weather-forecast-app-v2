@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react"
 import type { FC } from "react"
 import styles from "./styles.module.scss"
 import { LOCAL_STORAGE_KEY_WELCOME_MODAL } from "../../utils/constants"
@@ -10,10 +9,8 @@ import AirPollutionWidget from "../../components/widgets/AirPollutionWidget/AirP
 import WidgetContainer from "../../components/common/WidgetContainer/WidgetContainer"
 import Notification from "../../components/Notification/Notification"
 import Search from "../../components/Search/Search"
+import Modal from "../../components/Modal/Modal"
 import { getLocalStorageItem } from "../../browser/storage"
-
-/** Lazy-loaded Modal — only fetched on first visit when localStorage key is absent. */
-const Modal = lazy(() => import("../../components/Modal/Modal"))
 
 /**
  * Main dashboard page that composes all weather-related widgets.
@@ -79,11 +76,7 @@ const Dashboard: FC = () => {
 
     const welcomeModal = getLocalStorageItem(LOCAL_STORAGE_KEY_WELCOME_MODAL)
     if (!welcomeModal) {
-      return (
-        <Suspense fallback={null}>
-          <Modal hideModal={hideModal} />
-        </Suspense>
-      )
+      return <Modal hideModal={hideModal} />
     }
   }
 
