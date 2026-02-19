@@ -24,5 +24,14 @@ describe("browser/storage", () => {
       const result = getLocalStorageItem("my-key-value")
       expect(result).toEqual(null)
     })
+
+    it("returns null and removes the item when stored value is corrupted non-JSON", () => {
+      // Manually set a non-JSON string that will cause JSON.parse to throw
+      localStorage.setItem("corrupted", "not-valid-json{{{")
+      const result = getLocalStorageItem("corrupted")
+      expect(result).toEqual(null)
+      // The corrupted item should have been removed
+      expect(localStorage.getItem("corrupted")).toBeNull()
+    })
   })
 })

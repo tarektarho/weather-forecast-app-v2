@@ -176,4 +176,95 @@ describe("ForecastDetail", () => {
 
     expect(screen.getByTestId("forecast-detail-empty")).toBeInTheDocument()
   })
+
+  it("displays 'Night 🌙' when sys.pod is 'n'", () => {
+    const item = makeForecastItem({
+      sys: { pod: "n" },
+    })
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText(/Night 🌙/)).toBeInTheDocument()
+  })
+
+  it("displays 'Day ☀️' when sys.pod is 'd'", () => {
+    const item = makeForecastItem({
+      sys: { pod: "d" },
+    })
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText(/Day ☀️/)).toBeInTheDocument()
+  })
+
+  it("renders visibility in km", () => {
+    const item = makeForecastItem({ visibility: 5000 })
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText("5.0 km")).toBeInTheDocument()
+  })
+
+  it("renders rain probability as percentage", () => {
+    const item = makeForecastItem({ pop: 0.75 })
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText("75%")).toBeInTheDocument()
+  })
+
+  it("renders the weather icon with correct alt text", () => {
+    const item = makeForecastItem()
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    const img = screen.getByAltText("Weather icon for clear sky")
+    expect(img).toBeInTheDocument()
+    expect(img).toHaveAttribute("width", "100")
+  })
+
+  it("renders atmosphere details (pressure, sea level, ground level)", () => {
+    const item = makeForecastItem({
+      main: {
+        temp: 295,
+        feels_like: 293,
+        temp_min: 291,
+        temp_max: 297,
+        pressure: 1015,
+        sea_level: 1020,
+        grnd_level: 1009,
+        humidity: 65,
+        temp_kf: 0,
+      },
+    })
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText("1015 hPa", { exact: false })).toBeInTheDocument()
+    expect(screen.getByText("1020 hPa", { exact: false })).toBeInTheDocument()
+    expect(screen.getByText("1009 hPa", { exact: false })).toBeInTheDocument()
+  })
+
+  it("renders wind gust and direction", () => {
+    const item = makeForecastItem()
+    mockUseWeather.mockReturnValue(
+      mockContext({ data: makeForecastData([item]) }),
+    )
+    renderWithRoute(String(item.dt))
+
+    expect(screen.getByText("200°")).toBeInTheDocument()
+    expect(screen.getByText("5.2 m/s")).toBeInTheDocument()
+  })
 })
