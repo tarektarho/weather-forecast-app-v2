@@ -39,6 +39,109 @@ Leverages React 19 features including the **React Compiler** (via `babel-plugin-
 
 All API data fetching is handled by **RTK Query** (`@reduxjs/toolkit/query/react`). A single `baseApi` instance is created with `createApi` and endpoints are injected via `injectEndpoints()` for weather, forecast, and air pollution data.
 
+### App Initialization & Data Flow
+
+When the app loads, `WeatherProvider` resolves the user's location through a priority chain (URL → localStorage → Geolocation API), then fires three parallel API calls to fetch weather, forecast, and air pollution data.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Browser
+    participant App as App (React)
+    participant WP as WeatherProvider
+    participant RTK as RTK Query
+    participant OWM as OpenWeather API
+    participant LS as localStorage
+
+    User->>Browser: Opens app
+    Browser->>App: Render StrictMode → Provider → ErrorBoundary → BrowserRouter
+    App->>WP: Mount WeatherProvider
+
+    Note over WP: resolveInitialCoords() runs synchronously
+
+    WP->>Browser: Check URL params (?lat=…&lon=…)
+    alt URL has valid lat/lon
+        WP-->>WP: Use URL coordinates
+    else No URL params
+        WP->>LS: Read gps_position from localStorage
+        alt localStorage has valid coords
+            WP-->>WP: Use stored coordinates
+        else No stored coords
+            Note over WP: useEffect triggers geolocation
+            WP->>Browser: navigator.geolocation.getCurrentPosition()
+            Browser->>User: "Allow location access?" prompt
+            alt User grants permission
+                Browser-->>WP: { latitude, longitude }
+                WP->>LS: Save position to localStorage
+                WP-->>WP: setCoords({ lat, lon })
+            else User denies permission
+                Browser-->>WP: GeolocationError
+                WP-->>WP: setError("Geolocation off")
+            end
+        end
+    end
+
+    Note over WP: hasCoords=true → RTK Query hooks activate (skip=false)
+
+    par Parallel API calls
+        RTK->>OWM: GET /weather?lat=…&lon=…&appid=…
+        OWM-->>RTK: WeatherData (cached 10 min)
+    and
+        RTK->>OWM: GET /forecast?lat=…&lon=…&appid=…
+        OWM-->>RTK: ForecastData (cached 30 min)
+    and
+        RTK->>OWM: GET /air_pollution?lat=…&lon=…&appid=…
+        OWM-->>RTK: AirPollutionData (cached 30 min)
+    end
+
+    RTK-->>WP: weatherData, forecastData, airPollutionData
+    WP-->>App: Context value → Dashboard renders widgets
+    App-->>User: Current weather, 5-day forecast, air quality
+```
+
+### City Search & Share Flow
+
+When the user searches by city, the lat/lon hooks are deactivated and city-based hooks take over. Air pollution requires a two-step geocode since that API only accepts coordinates.
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Search as Search Bar
+    participant WP as WeatherProvider
+    participant RTK as RTK Query
+    participant OWM as OpenWeather API
+    participant Geo as Geocoding API
+    participant CB as Clipboard
+
+    User->>Search: Types city name & submits
+    Search->>WP: searchByCity("Amsterdam")
+    WP-->>WP: setSearchCity("Amsterdam") → hasCity=true
+
+    Note over WP: City hooks activate (skip=false), lat/lon hooks deactivate (skip=true)
+
+    par Parallel API calls
+        RTK->>OWM: GET /weather?q=Amsterdam&appid=…
+        OWM-->>RTK: WeatherData
+    and
+        RTK->>OWM: GET /forecast?q=Amsterdam&appid=…
+        OWM-->>RTK: ForecastData
+    and
+        Note over RTK: Air pollution requires lat/lon (two-step)
+        RTK->>Geo: GET /geo/1.0/direct?q=Amsterdam&limit=1&appid=…
+        Geo-->>RTK: [{ lat: 52.37, lon: 4.89 }]
+        RTK->>OWM: GET /air_pollution?lat=52.37&lon=4.89&appid=…
+        OWM-->>RTK: AirPollutionData
+    end
+
+    RTK-->>WP: Updated context (cached by city name)
+    WP-->>User: Dashboard updates with Amsterdam weather
+
+    Note over User: Clicks "Share" button
+    User->>WP: copyShareUrl()
+    WP->>CB: Copy URL with ?lat=52.37&lon=4.89
+    CB-->>User: "URL was copied to clipboard" notification
+```
+
 ### RTK Query & Caching Strategy
 
 - **Centralized API layer** — A shared `baseApi` with a custom `baseQuery` that auto-appends the API key and normalizes errors.
